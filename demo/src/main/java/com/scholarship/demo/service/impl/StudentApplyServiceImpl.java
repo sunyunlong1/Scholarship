@@ -1,11 +1,11 @@
 package com.scholarship.demo.service.impl;
 
-import com.scholarship.demo.api.ApplyDto;
 import com.scholarship.demo.api.LoginDto;
 import com.scholarship.demo.api.LoginResponse;
+import com.scholarship.demo.api.MyApply;
 import com.scholarship.demo.api.OnlineDto;
-import com.scholarship.demo.dao.studentApplyDao;
-import com.scholarship.demo.model.Student;
+import com.scholarship.demo.dao.StudentApplyDao;
+import com.scholarship.demo.model.*;
 import com.scholarship.demo.service.StudentApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,12 +16,29 @@ import java.util.List;
 @Repository
 public class StudentApplyServiceImpl implements StudentApplyService {
     @Autowired
-    studentApplyDao studentApplyDao;
+    StudentApplyDao studentApplyDao;
 
     @Override
     public LoginResponse login(LoginDto loginDto) {
-
-        return null;
+        LoginResponse loginResponse = new LoginResponse();
+        if(loginDto.getRole().equals("学生")){
+            Student student = studentApplyDao.selectBySid(loginDto.getAccount());
+            loginResponse.setUserName(student.getName());
+            loginResponse.setUserType("student");
+        }else if(loginDto.getRole().equals("老师")){
+            Teacher teacher = studentApplyDao.selectByTid(loginDto.getAccount());
+            loginResponse.setUserName(teacher.getName());
+            loginResponse.setUserType("teacher");
+        }else if(loginDto.getRole().equals("评委")){
+            Judges judges = studentApplyDao.selectByJid(loginDto.getAccount());
+            loginResponse.setUserName(judges.getName());
+            loginResponse.setUserType("judges");
+        }else{
+            Admin admin = studentApplyDao.selectByAid(loginDto.getAccount());
+            loginResponse.setUserName(admin.getName());
+            loginResponse.setUserType("admin");
+        }
+        return loginResponse;
     }
 
     @Override
@@ -38,6 +55,8 @@ public class StudentApplyServiceImpl implements StudentApplyService {
 
     @Override
     public String onlineApply(OnlineDto onlineDto) {
+        //todo 保存先判断是否有值，有的话更新，没有的话插入，并且把状态设为已保存
+        //todo 提交先判断是否有值，有的话更新，没有的话插入，并且把状态设为已提交
         Student student = new Student();
         student.setAddress(onlineDto.getAddress());
         student.setEmail(onlineDto.getEmail());
@@ -55,5 +74,41 @@ public class StudentApplyServiceImpl implements StudentApplyService {
         }else{
             return onlineDto.getIsSave()+"失败";
         }
+    }
+
+    @Override
+    public List<MyApply> myApply(String studentId) {
+        List<MyApply> resultList = new ArrayList<>();
+        List<Scholarship> scholarships = studentApplyDao.selectByStudentId(studentId);
+        for(Scholarship scholarship : scholarships){
+            MyApply myApply = new MyApply();
+            Student student = studentApplyDao.selectBySid(scholarship.getStudentId());
+            myApply.setApplyType(scholarship.getType());
+            myApply.setMajor(student.getMajor());
+            myApply.setName(student.getName());
+            myApply.setState(scholarship.getState());
+            resultList.add(myApply);
+        }
+        return resultList;
+    }
+
+    @Override
+    public OnlineDto edit(String name,String applyType) {
+        OnlineDto onlineDto = new OnlineDto();
+        Student student = studentApplyDao.selectByName(name);
+        Scholarship scholarship = studentApplyDao.selectBySidAndApplyType(student.getStudentId(), applyType);
+        onlineDto.setAddress(student.getAddress());
+        onlineDto.setApplyType(scholarship.getType());
+        onlineDto.setClassName(student.getClassName());
+        onlineDto.setDateOfBirth(student.getDateOfBirth());
+        onlineDto.setEmail(student.getEmail());
+        onlineDto.setIdNumber(student.getIdNumber());
+        onlineDto.setMajor(student.getMajor());
+        onlineDto.setName(student.getName());
+        onlineDto.setPoliticalOutlook(student.getPoliticalOutlook());
+        onlineDto.setSex(student.getSex());
+        onlineDto.setStudentId(student.getStudentId());
+        onlineDto.setIsSave(scholarship.getIsSave());
+        return onlineDto;
     }
 }

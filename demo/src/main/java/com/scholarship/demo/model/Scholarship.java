@@ -6,7 +6,6 @@ import lombok.Data;
 public class Scholarship {
 
     private int id;
-    private String title;
     private String type;
     private String studentId;
     private String state;

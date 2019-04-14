@@ -1,9 +1,6 @@
 package com.scholarship.demo.service;
 
-import com.scholarship.demo.api.ApplyDto;
-import com.scholarship.demo.api.LoginDto;
-import com.scholarship.demo.api.LoginResponse;
-import com.scholarship.demo.api.OnlineDto;
+import com.scholarship.demo.api.*;
 import com.scholarship.demo.model.Student;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +28,17 @@ public interface StudentApplyService {
      */
     String onlineApply(OnlineDto onlineDto);
 
+    /**
+     * 我的申请查询接口
+     * @param studentId
+     * @return
+     */
+    List<MyApply> myApply(String studentId);
+
+    /**
+     * 编辑接口
+     * @param name
+     * @return
+     */
+    OnlineDto edit(String name,String applyType);
 }
