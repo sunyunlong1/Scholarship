@@ -2,7 +2,10 @@ package com.scholarship.demo.controller;
 
 import com.scholarship.demo.model.Result;
 import com.scholarship.demo.model.Student;
+import com.scholarship.demo.service.StudentApplyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +19,11 @@ import java.util.Map;
 /**
  * 统一登陆
  */
+@Controller
 public class loginController {
+
+    @Autowired
+    StudentApplyService service;
 
     @RequestMapping("/login")
     @ResponseBody
