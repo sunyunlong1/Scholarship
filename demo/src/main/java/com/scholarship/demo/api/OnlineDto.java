@@ -17,5 +17,7 @@ public class OnlineDto {
     private String idNumber;
     private String telephoneNumber;
     private String email;
+    private String fGPA;
+    private String sGPA;
     private String isSave;
 }

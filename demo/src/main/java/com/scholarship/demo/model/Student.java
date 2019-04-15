@@ -18,4 +18,6 @@ public class Student {
     private String sex;
     private String address;
     private String dateOfBirth;
+    private String fGPA;
+    private String sGPA;
 }

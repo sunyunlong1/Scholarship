@@ -21,19 +21,19 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     @Override
     public LoginResponse login(LoginDto loginDto) {
         LoginResponse loginResponse = new LoginResponse();
-        if(loginDto.getRole().equals("学生")){
+        if (loginDto.getRole().equals("学生")) {
             Student student = studentApplyDao.selectBySid(loginDto.getAccount());
             loginResponse.setUserName(student.getName());
             loginResponse.setUserType("student");
-        }else if(loginDto.getRole().equals("老师")){
+        } else if (loginDto.getRole().equals("老师")) {
             Teacher teacher = studentApplyDao.selectByTid(loginDto.getAccount());
             loginResponse.setUserName(teacher.getName());
             loginResponse.setUserType("teacher");
-        }else if(loginDto.getRole().equals("评委")){
+        } else if (loginDto.getRole().equals("评委")) {
             Judges judges = studentApplyDao.selectByJid(loginDto.getAccount());
             loginResponse.setUserName(judges.getName());
             loginResponse.setUserType("judges");
-        }else{
+        } else {
             Admin admin = studentApplyDao.selectByAid(loginDto.getAccount());
             loginResponse.setUserName(admin.getName());
             loginResponse.setUserType("admin");
@@ -55,24 +55,46 @@ public class StudentApplyServiceImpl implements StudentApplyService {
 
     @Override
     public String onlineApply(OnlineDto onlineDto) {
-        //todo 保存先判断是否有值，有的话更新，没有的话插入，并且把状态设为已保存
-        //todo 提交先判断是否有值，有的话更新，没有的话插入，并且把状态设为已提交
-        Student student = new Student();
-        student.setAddress(onlineDto.getAddress());
-        student.setEmail(onlineDto.getEmail());
-        student.setSex(onlineDto.getSex());
-        student.setClassName(onlineDto.getClassName());
-        student.setDateOfBirth(onlineDto.getDateOfBirth());
-        student.setIdNumber(onlineDto.getIdNumber());
-        student.setMajor(onlineDto.getMajor());
-        student.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
-        student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
-        studentApplyDao.updateInf(student);
-        Integer integer = studentApplyDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave());
-        if(integer>0){
-            return onlineDto.getIsSave()+"成功";
-        }else{
-            return onlineDto.getIsSave()+"失败";
+
+        Scholarship scholarship = studentApplyDao.selectBySidAndApplyType(onlineDto.getStudentId(), onlineDto.getApplyType());
+        if(scholarship == null){
+            //todo 保存先判断是否有值，有的话更新，没有的话插入，并且把状态设为已保存
+            //todo 提交先判断是否有值，有的话更新，没有的话插入，并且把状态设为已提交
+            Student student = new Student();
+            student.setAddress(onlineDto.getAddress());
+            student.setEmail(onlineDto.getEmail());
+            student.setSex(onlineDto.getSex());
+            student.setClassName(onlineDto.getClassName());
+            student.setDateOfBirth(onlineDto.getDateOfBirth());
+            student.setIdNumber(onlineDto.getIdNumber());
+            student.setMajor(onlineDto.getMajor());
+            student.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
+            student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
+            student.setFGPA(onlineDto.getFGPA());
+            student.setSGPA(onlineDto.getSGPA());
+            studentApplyDao.updateInf(student);
+            Integer integer = studentApplyDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
+            if (integer > 0) {
+                return onlineDto.getIsSave() + "成功";
+            } else {
+                return onlineDto.getIsSave() + "失败";
+            }
+        }else {
+            Student student = new Student();
+            student.setAddress(onlineDto.getAddress());
+            student.setEmail(onlineDto.getEmail());
+            student.setSex(onlineDto.getSex());
+            student.setClassName(onlineDto.getClassName());
+            student.setDateOfBirth(onlineDto.getDateOfBirth());
+            student.setIdNumber(onlineDto.getIdNumber());
+            student.setMajor(onlineDto.getMajor());
+            student.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
+            student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
+            student.setFGPA(onlineDto.getFGPA());
+            student.setSGPA(onlineDto.getSGPA());
+            studentApplyDao.updateInf(student);
+            studentApplyDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
+            return onlineDto.getIsSave() + "成功";
         }
     }
 
@@ -80,7 +102,7 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     public List<MyApply> myApply(String studentId) {
         List<MyApply> resultList = new ArrayList<>();
         List<Scholarship> scholarships = studentApplyDao.selectByStudentId(studentId);
-        for(Scholarship scholarship : scholarships){
+        for (Scholarship scholarship : scholarships) {
             MyApply myApply = new MyApply();
             Student student = studentApplyDao.selectBySid(scholarship.getStudentId());
             myApply.setApplyType(scholarship.getType());
@@ -93,7 +115,7 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     }
 
     @Override
-    public OnlineDto edit(String name,String applyType) {
+    public OnlineDto edit(String name, String applyType) {
         OnlineDto onlineDto = new OnlineDto();
         Student student = studentApplyDao.selectByName(name);
         Scholarship scholarship = studentApplyDao.selectBySidAndApplyType(student.getStudentId(), applyType);
@@ -110,5 +132,12 @@ public class StudentApplyServiceImpl implements StudentApplyService {
         onlineDto.setStudentId(student.getStudentId());
         onlineDto.setIsSave(scholarship.getIsSave());
         return onlineDto;
+    }
+
+    @Override
+    public String scoreQuery(LoginDto loginDto) {
+
+
+        return null;
     }
 }

@@ -29,38 +29,41 @@ public class LoginController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public String login(@RequestBody LoginDto loginDto, HttpRequest httpRequest){
+    public String login(@RequestBody LoginDto loginDto, HttpServletRequest httpRequest){
 
-        LoginResponse login =
-                service.login(loginDto);
-        if(login !=null || !login.getUserName().equals("")){
-            Map<String, String> readCookieMap = ReadCookieMap((HttpServletRequest) httpRequest);
-            String login_ticket = readCookieMap.get("login_ticket");
-            HttpSession session = ((HttpServletRequest) httpRequest).getSession();
-            session.setAttribute(login_ticket, loginDto.toString());
-            session.setMaxInactiveInterval(60*60*24);
-            if(login_ticket!=null){
-                session.setAttribute(login_ticket,login);
+        Map<String, String> readCookieMap = ReadCookieMap(httpRequest);
+        HttpSession session = httpRequest.getSession();
+
+
+            LoginResponse login =
+                    service.login(loginDto);
+            if(login !=null || !login.getUserName().equals("")){
+
+                String login_ticket = readCookieMap.get("login_ticket");
+                session.setAttribute(login_ticket, loginDto.toString());
+                session.setMaxInactiveInterval(60*60*24);
+                if(login_ticket!=null){
+                    session.setAttribute(login_ticket,login);
+                }else{
+                    session.setAttribute("123",login);
+                }
+                return JSON.toJSONString(new Result(200,"登陆成功",login));
             }else{
-                session.setAttribute("123",login);
+                return JSON.toJSONString(new Result(405,"登陆失败",""));
             }
-            return JSON.toJSONString(new Result(200,"登陆成功",login));
-        }else{
-            return JSON.toJSONString(new Result(405,"登陆失败",""));
-        }
     }
 
     @RequestMapping("/checkLogin")
     @ResponseBody
-    public String checkLogin(HttpRequest httpRequest){
-        Map<String, String> readCookieMap = ReadCookieMap((HttpServletRequest) httpRequest);
+    public String checkLogin(HttpServletRequest httpRequest){
+        Map<String, String> readCookieMap = ReadCookieMap(httpRequest);
         String login_ticket = readCookieMap.get("login_ticket");
-        HttpSession session = ((HttpServletRequest) httpRequest).getSession();
+        HttpSession session = httpRequest.getSession();
         String attribute = (String) session.getAttribute(login_ticket);
         if(attribute!=null){
-            return new Result(200,"-",attribute).toString();
+            return JSON.toJSONString(new Result(200,"-",attribute));
         }else{
-            return new Result(400,"session过期,请重新登陆","-").toString();
+            return JSON.toJSONString(new Result(400,"session过期,请重新登陆","-"));
         }
     }
     /**

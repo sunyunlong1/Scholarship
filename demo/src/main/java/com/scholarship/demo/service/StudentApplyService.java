@@ -41,4 +41,11 @@ public interface StudentApplyService {
      * @return
      */
     OnlineDto edit(String name,String applyType);
+
+    /**
+     * 成绩查询
+     * @param loginDto
+     * @return
+     */
+    String scoreQuery(LoginDto loginDto);
 }

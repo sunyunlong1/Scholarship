@@ -50,4 +50,10 @@ public class StudentController {
         OnlineDto onlineDto = service.edit(myApply.getName(), myApply.getApplyType());
         return JSON.toJSONString(new Result(200,"-",onlineDto));
     }
+
+    @RequestMapping("/scoreQuery")
+    @ResponseBody
+    public String scoreQuery(@RequestBody LoginDto loginDto){
+        return "";
+    }
 }

@@ -11,16 +11,20 @@ public interface StudentApplyDao {
     @Update({"<script> " +
             "update student " +
             "<set> " +
-            "major = #{s.major},className = #{s.className},idNumber = {s.idNumber},email = #{s.email},telephoneNumber = #{s.telephoneNumber},politicalOutlook = #{s.politicalOutlook},sex = #{s.sex},address = #{s.address},dateOfBirth = #{dateOfBirth}  " +
+            "major = #{s.major},className = #{s.className},idNumber = {s.idNumber},email = #{s.email},telephoneNumber = #{s.telephoneNumber},politicalOutlook = #{s.politicalOutlook},sex = #{s.sex},address = #{s.address},dateOfBirth = #{dateOfBirth},fGPA = #{s.fGPA},sGPA = #{s.sGPA}  " +
             "</set> " +
             "where studentId = #{s.studentId} " +
             "</script>"})
     void updateInf(@Param("s") Student student);
 
-    @Insert({"<script> insert into scholarship (type,studentId,isSave) values (#{type},#{studentId}),#{isSave} </script>"})
+    @Insert({"<script> insert into scholarship (type,studentId,isSave,major) values (#{type},#{studentId},#{isSave},#{major})</script>"})
     @ResultType(java.lang.Integer.class)
-    Integer insertScholarship(String type,String studentId,String isSave);
+    Integer insertScholarship(String type,String studentId,String isSave,String major);
 
+
+    @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major} </set> where type = #{type} and studentId = #{studentId} </script>"})
+    @ResultType(java.lang.Integer.class)
+    void updateScholarship(String type,String studentId,String isSave,String major);
 
     @Select({"<script> select * from student where studentId = #{studentId} </script>"})
     @ResultType(Student.class)
@@ -49,4 +53,7 @@ public interface StudentApplyDao {
     @Select({"<script> select * from student where name = #{userName} </script>"})
     @ResultType(Student.class)
     Student selectByName(String userName);
+
+
+
 }
