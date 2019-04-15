@@ -55,5 +55,8 @@ public interface StudentApplyDao {
     Student selectByName(String userName);
 
 
+    @Select({"<script> select * from scholarship where studentId = #{studentId} </script>"})
+    @ResultType(Scholarship.class)
+    Scholarship findBySid(String studentId);
 
 }

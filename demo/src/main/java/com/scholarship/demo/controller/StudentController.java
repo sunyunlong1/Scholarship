@@ -1,9 +1,7 @@
 package com.scholarship.demo.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.scholarship.demo.api.LoginDto;
-import com.scholarship.demo.api.MyApply;
-import com.scholarship.demo.api.OnlineDto;
+import com.scholarship.demo.api.*;
 import com.scholarship.demo.model.Result;
 import com.scholarship.demo.model.Student;
 import com.scholarship.demo.service.StudentApplyService;
@@ -54,6 +52,13 @@ public class StudentController {
     @RequestMapping("/scoreQuery")
     @ResponseBody
     public String scoreQuery(@RequestBody LoginDto loginDto){
+        ScoreQueryResponse response = service.scoreQuery(loginDto);
+        return JSON.toJSONString(new Result(200,"-",response));
+    }
+
+    @RequestMapping("/changePassword")
+    @ResponseBody
+    public String changePassword(@RequestBody ChangeDto changeDto){
         return "";
     }
 }

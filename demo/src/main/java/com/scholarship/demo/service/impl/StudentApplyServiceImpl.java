@@ -1,9 +1,6 @@
 package com.scholarship.demo.service.impl;
 
-import com.scholarship.demo.api.LoginDto;
-import com.scholarship.demo.api.LoginResponse;
-import com.scholarship.demo.api.MyApply;
-import com.scholarship.demo.api.OnlineDto;
+import com.scholarship.demo.api.*;
 import com.scholarship.demo.dao.StudentApplyDao;
 import com.scholarship.demo.model.*;
 import com.scholarship.demo.service.StudentApplyService;
@@ -36,7 +33,7 @@ public class StudentApplyServiceImpl implements StudentApplyService {
         } else {
             Admin admin = studentApplyDao.selectByAid(loginDto.getAccount());
             loginResponse.setUserName(admin.getName());
-            loginResponse.setUserType("admin");
+            loginResponse.setUserType("manager");
         }
         return loginResponse;
     }
@@ -58,8 +55,6 @@ public class StudentApplyServiceImpl implements StudentApplyService {
 
         Scholarship scholarship = studentApplyDao.selectBySidAndApplyType(onlineDto.getStudentId(), onlineDto.getApplyType());
         if(scholarship == null){
-            //todo 保存先判断是否有值，有的话更新，没有的话插入，并且把状态设为已保存
-            //todo 提交先判断是否有值，有的话更新，没有的话插入，并且把状态设为已提交
             Student student = new Student();
             student.setAddress(onlineDto.getAddress());
             student.setEmail(onlineDto.getEmail());
@@ -135,9 +130,13 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     }
 
     @Override
-    public String scoreQuery(LoginDto loginDto) {
-
-
-        return null;
+    public ScoreQueryResponse scoreQuery(LoginDto loginDto) {
+        Scholarship scholarship = studentApplyDao.findBySid(loginDto.getAccount());
+        ScoreQueryResponse response = new ScoreQueryResponse();
+        response.setApplyType(scholarship.getType());
+        response.setAvg(scholarship.getIsLand());
+        Student student = studentApplyDao.selectBySid(scholarship.getStudentId());
+        response.setName(student.getName());
+        return response;
     }
 }

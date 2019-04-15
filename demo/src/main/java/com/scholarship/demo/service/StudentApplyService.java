@@ -47,5 +47,6 @@ public interface StudentApplyService {
      * @param loginDto
      * @return
      */
-    String scoreQuery(LoginDto loginDto);
+    ScoreQueryResponse scoreQuery(LoginDto loginDto);
+
 }
