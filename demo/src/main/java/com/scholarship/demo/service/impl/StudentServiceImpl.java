@@ -130,14 +130,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ScoreQueryResponse scoreQuery(LoginDto loginDto) {
-        Scholarship scholarship = studentDao.findBySid(loginDto.getAccount());
-        ScoreQueryResponse response = new ScoreQueryResponse();
-        response.setApplyType(scholarship.getType());
-        response.setReason(scholarship.getReason());
-        response.setAvg(scholarship.getIsLand());
-        Student student = studentDao.selectBySid(scholarship.getStudentId());
-        response.setName(student.getName());
-        return response;
+    public List<ScoreQueryResponse> scoreQuery(LoginDto loginDto) {
+        List<Scholarship> scholarshipList = studentDao.findBySid(loginDto.getAccount());
+        List<ScoreQueryResponse> responseList = new ArrayList<>();
+        for(Scholarship scholarship : scholarshipList) {
+            ScoreQueryResponse response = new ScoreQueryResponse();
+            response.setApplyType(scholarship.getType());
+            response.setReason(scholarship.getReason());
+            response.setAvg(scholarship.getIsLand());
+            Student student = studentDao.selectBySid(scholarship.getStudentId());
+            response.setName(student.getName());
+            responseList.add(response);
+        }
+        return responseList;
     }
 }

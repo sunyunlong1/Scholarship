@@ -47,14 +47,14 @@ public class StudentController {
     @RequestMapping("/edit")
     @ResponseBody
     public String edit(@RequestBody MyApply myApply){
-        OnlineDto onlineDto = service.edit(myApply.getName(), myApply.getApplyType());
+        OnlineDto onlineDto = service.edit(myApply.getName(), myApply.getApplyType(),myApply.getYear());
         return JSON.toJSONString(new Result(200,"-",onlineDto));
     }
 
     @RequestMapping("/scoreQuery")
     @ResponseBody
     public String scoreQuery(@RequestBody LoginDto loginDto){
-        ScoreQueryResponse response = service.scoreQuery(loginDto);
+        List<ScoreQueryResponse> response = service.scoreQuery(loginDto);
         return JSON.toJSONString(new Result(200,"-",response));
     }
 

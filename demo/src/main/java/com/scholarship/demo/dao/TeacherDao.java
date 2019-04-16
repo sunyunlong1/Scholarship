@@ -17,7 +17,7 @@ public interface TeacherDao {
     List<Student> selectByMajor(String major);
 
 
-    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time = like '%'||#{year}||'%' </script>"})
+    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time like CONCAT('%',#{year},'%') </script>"})
     @ResultType(Scholarship.class)
     Scholarship selectBySIdAndType(String studentId,String type,String year);
 

@@ -9,4 +9,5 @@ public class MyApply {
     private String name;
     private String major;
     private String state;
+    private String year;
 }

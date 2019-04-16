@@ -47,6 +47,6 @@ public interface StudentService {
      * @param loginDto
      * @return
      */
-    ScoreQueryResponse scoreQuery(LoginDto loginDto);
+    List<ScoreQueryResponse> scoreQuery(LoginDto loginDto);
 
 }

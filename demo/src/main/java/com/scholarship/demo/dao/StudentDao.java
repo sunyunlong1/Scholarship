@@ -45,7 +45,7 @@ public interface StudentDao {
     @ResultType(Scholarship.class)
     List<Scholarship> selectByStudentId(String studentId);
 
-    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{applyType} and time '%'||#{year}||'%' </script>"})
+    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{applyType} and time CONCAT('%',#{year},'%') </script>"})
     @ResultType(Scholarship.class)
     Scholarship selectBySidAndApplyType(String studentId,String applyType,String year);
 
@@ -56,7 +56,7 @@ public interface StudentDao {
 
     @Select({"<script> select * from scholarship where studentId = #{studentId} </script>"})
     @ResultType(Scholarship.class)
-    Scholarship findBySid(String studentId);
+    List<Scholarship> findBySid(String studentId);
 
     @Update({"<script> update student <set> password = #{password} </set> where studentId = #{account} </script>"})
     void updateSPassword(String account,String password);
