@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface StudentApplyDao {
+public interface StudentDao {
 
     @Update({"<script> " +
             "update student " +
@@ -23,7 +23,6 @@ public interface StudentApplyDao {
 
 
     @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major} </set> where type = #{type} and studentId = #{studentId} </script>"})
-    @ResultType(java.lang.Integer.class)
     void updateScholarship(String type,String studentId,String isSave,String major);
 
     @Select({"<script> select * from student where studentId = #{studentId} </script>"})
@@ -46,9 +45,9 @@ public interface StudentApplyDao {
     @ResultType(Scholarship.class)
     List<Scholarship> selectByStudentId(String studentId);
 
-    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{applyType} </script>"})
+    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{applyType} and time '%'||#{year}||'%' </script>"})
     @ResultType(Scholarship.class)
-    Scholarship selectBySidAndApplyType(String studentId,String applyType);
+    Scholarship selectBySidAndApplyType(String studentId,String applyType,String year);
 
     @Select({"<script> select * from student where name = #{userName} </script>"})
     @ResultType(Student.class)
@@ -59,4 +58,15 @@ public interface StudentApplyDao {
     @ResultType(Scholarship.class)
     Scholarship findBySid(String studentId);
 
+    @Update({"<script> update student <set> password = #{password} </set> where studentId = #{account} </script>"})
+    void updateSPassword(String account,String password);
+
+    @Update({"<script> update teacher <set> password = #{password} </set> where teacherId = #{account} </script>"})
+    void updateTPassword(String account,String password);
+
+    @Update({"<script> update admin <set> password = #{password} </set> where adminId = #{account} </script>"})
+    void updateAPassword(String account,String password);
+
+    @Update({"<script> update judges <set> password = #{password} </set> where judgesId = #{account} </script>"})
+    void updateJPassword(String account,String password);
 }

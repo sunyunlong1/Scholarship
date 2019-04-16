@@ -1,9 +1,9 @@
 package com.scholarship.demo.service.impl;
 
 import com.scholarship.demo.api.*;
-import com.scholarship.demo.dao.StudentApplyDao;
+import com.scholarship.demo.dao.StudentDao;
 import com.scholarship.demo.model.*;
-import com.scholarship.demo.service.StudentApplyService;
+import com.scholarship.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,27 +11,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class StudentApplyServiceImpl implements StudentApplyService {
+public class StudentServiceImpl implements StudentService {
     @Autowired
-    StudentApplyDao studentApplyDao;
+    StudentDao studentDao;
 
     @Override
     public LoginResponse login(LoginDto loginDto) {
         LoginResponse loginResponse = new LoginResponse();
         if (loginDto.getRole().equals("学生")) {
-            Student student = studentApplyDao.selectBySid(loginDto.getAccount());
+            Student student = studentDao.selectBySid(loginDto.getAccount());
             loginResponse.setUserName(student.getName());
             loginResponse.setUserType("student");
         } else if (loginDto.getRole().equals("老师")) {
-            Teacher teacher = studentApplyDao.selectByTid(loginDto.getAccount());
+            Teacher teacher = studentDao.selectByTid(loginDto.getAccount());
             loginResponse.setUserName(teacher.getName());
             loginResponse.setUserType("teacher");
         } else if (loginDto.getRole().equals("评委")) {
-            Judges judges = studentApplyDao.selectByJid(loginDto.getAccount());
+            Judges judges = studentDao.selectByJid(loginDto.getAccount());
             loginResponse.setUserName(judges.getName());
             loginResponse.setUserType("judges");
         } else {
-            Admin admin = studentApplyDao.selectByAid(loginDto.getAccount());
+            Admin admin = studentDao.selectByAid(loginDto.getAccount());
             loginResponse.setUserName(admin.getName());
             loginResponse.setUserType("manager");
         }
@@ -53,7 +53,7 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     @Override
     public String onlineApply(OnlineDto onlineDto) {
 
-        Scholarship scholarship = studentApplyDao.selectBySidAndApplyType(onlineDto.getStudentId(), onlineDto.getApplyType());
+        Scholarship scholarship = studentDao.selectBySidAndApplyType(onlineDto.getStudentId(), onlineDto.getApplyType(),onlineDto.getYear());
         if(scholarship == null){
             Student student = new Student();
             student.setAddress(onlineDto.getAddress());
@@ -67,8 +67,8 @@ public class StudentApplyServiceImpl implements StudentApplyService {
             student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
             student.setFGPA(onlineDto.getFGPA());
             student.setSGPA(onlineDto.getSGPA());
-            studentApplyDao.updateInf(student);
-            Integer integer = studentApplyDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
+            studentDao.updateInf(student);
+            Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
             if (integer > 0) {
                 return onlineDto.getIsSave() + "成功";
             } else {
@@ -87,8 +87,8 @@ public class StudentApplyServiceImpl implements StudentApplyService {
             student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
             student.setFGPA(onlineDto.getFGPA());
             student.setSGPA(onlineDto.getSGPA());
-            studentApplyDao.updateInf(student);
-            studentApplyDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
+            studentDao.updateInf(student);
+            studentDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
             return onlineDto.getIsSave() + "成功";
         }
     }
@@ -96,10 +96,10 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     @Override
     public List<MyApply> myApply(String studentId) {
         List<MyApply> resultList = new ArrayList<>();
-        List<Scholarship> scholarships = studentApplyDao.selectByStudentId(studentId);
+        List<Scholarship> scholarships = studentDao.selectByStudentId(studentId);
         for (Scholarship scholarship : scholarships) {
             MyApply myApply = new MyApply();
-            Student student = studentApplyDao.selectBySid(scholarship.getStudentId());
+            Student student = studentDao.selectBySid(scholarship.getStudentId());
             myApply.setApplyType(scholarship.getType());
             myApply.setMajor(student.getMajor());
             myApply.setName(student.getName());
@@ -110,10 +110,10 @@ public class StudentApplyServiceImpl implements StudentApplyService {
     }
 
     @Override
-    public OnlineDto edit(String name, String applyType) {
+    public OnlineDto edit(String name, String applyType,String year) {
         OnlineDto onlineDto = new OnlineDto();
-        Student student = studentApplyDao.selectByName(name);
-        Scholarship scholarship = studentApplyDao.selectBySidAndApplyType(student.getStudentId(), applyType);
+        Student student = studentDao.selectByName(name);
+        Scholarship scholarship = studentDao.selectBySidAndApplyType(student.getStudentId(), applyType,year);
         onlineDto.setAddress(student.getAddress());
         onlineDto.setApplyType(scholarship.getType());
         onlineDto.setClassName(student.getClassName());
@@ -131,11 +131,12 @@ public class StudentApplyServiceImpl implements StudentApplyService {
 
     @Override
     public ScoreQueryResponse scoreQuery(LoginDto loginDto) {
-        Scholarship scholarship = studentApplyDao.findBySid(loginDto.getAccount());
+        Scholarship scholarship = studentDao.findBySid(loginDto.getAccount());
         ScoreQueryResponse response = new ScoreQueryResponse();
         response.setApplyType(scholarship.getType());
+        response.setReason(scholarship.getReason());
         response.setAvg(scholarship.getIsLand());
-        Student student = studentApplyDao.selectBySid(scholarship.getStudentId());
+        Student student = studentDao.selectBySid(scholarship.getStudentId());
         response.setName(student.getName());
         return response;
     }

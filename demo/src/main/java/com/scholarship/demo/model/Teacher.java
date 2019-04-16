@@ -9,5 +9,5 @@ public class Teacher {
     private String name;
     private String teacherId;
     private String password;
-
+    private String major;
 }

@@ -3,8 +3,8 @@ package com.scholarship.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.scholarship.demo.api.*;
 import com.scholarship.demo.model.Result;
-import com.scholarship.demo.model.Student;
-import com.scholarship.demo.service.StudentApplyService;
+import com.scholarship.demo.service.StudentService;
+import com.scholarship.demo.service.UtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,9 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    private StudentApplyService service;
+    StudentService service;
+    @Autowired
+    UtilsService utilsService;
 
     @RequestMapping("/applyType")
     @ResponseBody
@@ -59,6 +61,7 @@ public class StudentController {
     @RequestMapping("/changePassword")
     @ResponseBody
     public String changePassword(@RequestBody ChangeDto changeDto){
-        return "";
+        String s = utilsService.changePassword(changeDto);
+        return JSON.toJSONString(new Result(200,"-",s));
     }
 }

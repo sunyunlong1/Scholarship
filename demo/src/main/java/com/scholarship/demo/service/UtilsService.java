@@ -1,7 +1,6 @@
 package com.scholarship.demo.service;
 
 import com.scholarship.demo.api.ChangeDto;
-import com.scholarship.demo.api.LoginDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,4 +12,12 @@ public interface UtilsService {
      * @return
      */
     String changePassword(ChangeDto changeDto);
+
+    /**
+     * 发送邮件
+     * @param email
+     * @param content
+     * @return
+     */
+    String sendMail(String email,String content);
 }

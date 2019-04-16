@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface StudentApplyService {
+public interface StudentService {
 
     /**
      * 统一登陆管理
@@ -40,7 +40,7 @@ public interface StudentApplyService {
      * @param name
      * @return
      */
-    OnlineDto edit(String name,String applyType);
+    OnlineDto edit(String name,String applyType,String year);
 
     /**
      * 成绩查询

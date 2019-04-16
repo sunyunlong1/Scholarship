@@ -3,7 +3,7 @@ package com.scholarship.demo.api;
 import lombok.Data;
 
 @Data
-public class OnlineDto {
+public class TeacherDetailsRep {
 
     private String applyType;
     private String studentId;
@@ -19,6 +19,5 @@ public class OnlineDto {
     private String email;
     private String fGPA;
     private String sGPA;
-    private String isSave;
-    private String year;
+    private String time;
 }

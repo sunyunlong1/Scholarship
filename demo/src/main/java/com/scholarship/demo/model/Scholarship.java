@@ -12,9 +12,10 @@ public class Scholarship {
     private String teacherId;
     private String judgesId;
     private String oneApproval;
+    private String reason;
     private String twoApproval;
     private String major;
     private String isSave;
     private String isLand;
-
+    private String time;
 }

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.scholarship.demo.api.LoginDto;
 import com.scholarship.demo.api.LoginResponse;
 import com.scholarship.demo.model.Result;
-import com.scholarship.demo.service.StudentApplyService;
+import com.scholarship.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +26,7 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    StudentApplyService studentService;
+    StudentService studentService;
 
     @RequestMapping("/login")
     @ResponseBody
