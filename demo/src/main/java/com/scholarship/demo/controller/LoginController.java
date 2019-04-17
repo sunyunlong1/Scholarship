@@ -1,10 +1,13 @@
 package com.scholarship.demo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.scholarship.demo.api.ChangeDto;
 import com.scholarship.demo.api.LoginDto;
 import com.scholarship.demo.api.LoginResponse;
 import com.scholarship.demo.model.Result;
+import com.scholarship.demo.service.LoginService;
 import com.scholarship.demo.service.StudentService;
+import com.scholarship.demo.service.UtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +30,10 @@ public class LoginController {
 
     @Autowired
     StudentService studentService;
+    @Autowired
+    UtilsService utilsService;
+    @Autowired
+    LoginService loginService;
 
     @RequestMapping("/login")
     @ResponseBody
@@ -110,4 +117,18 @@ public class LoginController {
         return cookieName;
     }
 
+
+    @RequestMapping("/changePassword")
+    @ResponseBody
+    public String changePassword(@RequestBody ChangeDto changeDto){
+        String s = utilsService.changePassword(changeDto);
+        return JSON.toJSONString(new Result(200,"-",s));
+    }
+
+    @RequestMapping("/sendCode")
+    @ResponseBody
+    public String sendCode(@RequestBody LoginDto loginDto){
+        String s = loginService.sendCode(loginDto);
+        return JSON.toJSONString(new Result(200,"-",s));
+    }
 }

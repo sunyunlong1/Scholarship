@@ -97,8 +97,16 @@ public class UtilsServiceImpl implements UtilsService {
             //newRandomCode = getNewRandomCode(6);
             newRandomCode = "687413";
             // 内容(这个内容还不能乱写,有可能会被SMTP拒绝掉;多试几次吧)
-            message.setSubject("东北农业大学奖学金评分系统密码修改");
-            message.setContent("<h1>"+content+newRandomCode+"</h1>", "text/html;charset=UTF-8");
+            if(content.equals("验证码")){
+                message.setSubject("东北农业大学奖学金评分系统密码修改");
+                message.setContent("<h1>"+"您的验证码为："+newRandomCode+"请勿告诉他人"+"</h1>", "text/html;charset=UTF-8");
+            }else if(content.equals("发布")){
+                message.setSubject("东北农业大学奖学金评分系统成绩查询提醒");
+                message.setContent("<h1>"+"同学您好，您的奖学金评分结果已经公布，请去官网查看！"+"</h1>", "text/html;charset=UTF-8");
+            }else if(content.equals("提醒")){
+                message.setSubject("东北农业大学奖学金评分系统评分提醒");
+                message.setContent("<h1>"+"评委老师您好，您还有待审批的记录，请尽快审批，谢谢！"+"</h1>", "text/html;charset=UTF-8");
+            }
             message.setSentDate(new Date());
             message.saveChanges();
             Transport.send(message);

@@ -58,10 +58,5 @@ public class StudentController {
         return JSON.toJSONString(new Result(200,"-",response));
     }
 
-    @RequestMapping("/changePassword")
-    @ResponseBody
-    public String changePassword(@RequestBody ChangeDto changeDto){
-        String s = utilsService.changePassword(changeDto);
-        return JSON.toJSONString(new Result(200,"-",s));
-    }
+
 }
