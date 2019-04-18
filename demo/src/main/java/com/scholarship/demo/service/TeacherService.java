@@ -1,6 +1,7 @@
 package com.scholarship.demo.service;
 
 import com.scholarship.demo.api.*;
+import com.scholarship.demo.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -12,7 +13,7 @@ public interface TeacherService {
     /**
      * 辅导员申请书管理查询界面
      */
-    List<TeacherResponse> applyManager(TeacherDto teacher);
+    TeacherResponse applyManager(TeacherDto teacher);
 
     /**
      * 辅导员申请书管理查看详情
@@ -27,4 +28,11 @@ public interface TeacherService {
      * @return
      */
     String approval(ApprovalDto approvalDto);
+
+    /**
+     * 查询学生信息
+     * @param teacherFIndDto
+     * @return
+     */
+    List<Student> findInf(TeacherFIndDto teacherFIndDto);
 }

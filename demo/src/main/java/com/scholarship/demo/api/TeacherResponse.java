@@ -2,11 +2,12 @@ package com.scholarship.demo.api;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class TeacherResponse {
 
-    private String name;
-    private String time;
-    private String studentId;
-    private String type;
+    private List<TeacherResponseDto> responseDtoList;
+    private String isPassSum;
+    private String noPassSum;
 }
