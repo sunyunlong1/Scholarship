@@ -34,7 +34,7 @@ public class UtilsServiceImpl implements UtilsService {
 
     @Override
     public String changePassword(ChangeDto changeDto) {
-        if(changeDto.getVCode().equals("687413")){
+
             if(changeDto.getRole().equals("学生")){
                 Student student = studentDao.selectBySid(changeDto.getAccount());
                 if(student.getPassword().equals(changeDto.getOldPassword())){
@@ -64,10 +64,7 @@ public class UtilsServiceImpl implements UtilsService {
                     return "旧密码输入错误";
                 }
             }
-            return "角色累心错误";
-        }else{
-            return "验证码错误，请重新输入";
-        }
+            return "角色类型错误";
     }
 
     @Override
@@ -95,7 +92,7 @@ public class UtilsServiceImpl implements UtilsService {
              message.setRecipients(Message.RecipientType.TO, email);
 //		message.setRecipients(Message.RecipientType.CC, MY_EMAIL_ACCOUNT);
             //newRandomCode = getNewRandomCode(6);
-            newRandomCode = "687413";
+            newRandomCode = getNewRandomCode(6);
             // 内容(这个内容还不能乱写,有可能会被SMTP拒绝掉;多试几次吧)
             if(content.equals("验证码")){
                 message.setSubject("东北农业大学奖学金评分系统密码修改");
