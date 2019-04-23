@@ -3,6 +3,7 @@ package com.scholarship.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.scholarship.demo.api.*;
 import com.scholarship.demo.model.Result;
+import com.scholarship.demo.model.Student;
 import com.scholarship.demo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,8 @@ public class TeacherController {
     @RequestMapping("/applyManager")
     @ResponseBody
     public String applyManager(@RequestBody TeacherDto teacher){
-        List<TeacherResponse> resultList = teacherService.applyManager(teacher);
-        return JSON.toJSONString(new Result(200,"-",resultList));
+        TeacherResponse result = teacherService.applyManager(teacher);
+        return JSON.toJSONString(new Result(200,"-",result));
     }
 
     @RequestMapping("/details")
@@ -38,5 +39,12 @@ public class TeacherController {
     public String approval(@RequestBody ApprovalDto approvalDto){
         String result = teacherService.approval(approvalDto);
         return JSON.toJSONString(new Result(200,"-",result));
+    }
+
+    @RequestMapping("/findInf")
+    @ResponseBody
+    public String findInf(@RequestBody TeacherFIndDto teacherFIndDto){
+        List<Student> inf = teacherService.findInf(teacherFIndDto);
+        return JSON.toJSONString(new Result(200,"-",inf));
     }
 }
