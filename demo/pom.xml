@@ -63,6 +63,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+
 		<!-- 引入短信接口-->
 		<dependency>
 			<groupId>com.github.qcloudsms</groupId>

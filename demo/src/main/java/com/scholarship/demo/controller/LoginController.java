@@ -19,7 +19,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,25 +44,30 @@ public class LoginController {
     @ResponseBody
     public String login(@RequestBody LoginDto loginDto, HttpServletRequest httpRequest, HttpServletResponse response){
 
-        Cookie cookie = null;
-        if(loginDto.getRole().equals("学生")){
-            cookie = new Cookie("t_student","student");
-        }else if(loginDto.getRole().equals("老师")){
-            cookie = new Cookie("t_teacher","teacher");
-        }else if(loginDto.getRole().equals("评委")){
-            cookie = new Cookie("t_judges","judges");
-        }else if(loginDto.getRole().equals("管理员")){
-            cookie = new Cookie("t_manager","manager");
-        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = df.format(new Date());
+        String endString = md5(format);
+
+//        Cookie cookie = null;
+//        if(loginDto.getRole().equals("学生")){
+//            cookie = new Cookie("t_student","student");
+//        }else if(loginDto.getRole().equals("老师")){
+//            cookie = new Cookie("t_teacher","teacher");
+//        }else if(loginDto.getRole().equals("评委")){
+//            cookie = new Cookie("t_judges","judges");
+//        }else if(loginDto.getRole().equals("管理员")){
+//            cookie = new Cookie("t_manager","manager");
+//        }
+        Cookie cookie = new Cookie("login_ticket",endString);
         cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);
         LoginResponse login = studentService.login(loginDto);
         if(login != null || !login.getUserName().equals("")){
-            String login_ticket = login.getUserType();
+            //String login_ticket = login.getUserType();
             HttpSession session = httpRequest.getSession();
             session.setMaxInactiveInterval(60*60*24);
-            if(login_ticket!=null){
-                session.setAttribute(login_ticket,login);
+            if(endString!=null){
+                session.setAttribute(endString,login);
             }else{
                 session.setAttribute("123",login);
             }
@@ -71,14 +81,15 @@ public class LoginController {
     @ResponseBody
     public String checkLogin(HttpServletRequest httpRequest){
         List<String> strings = ReadCookieMap(httpRequest);
-        String login_ticket = "";
-        for (String cookieName :strings){
-            if (cookieName.contains("t_")){
-                login_ticket = cookieName;
+        String value ="";
+        Cookie[] cookies = httpRequest.getCookies();
+        for (Cookie cookie : cookies){
+            if(cookie.getName().equals("login_ticket")){
+                value = cookie.getValue();
             }
         }
         HttpSession session = httpRequest.getSession();
-        LoginResponse loginResponse = (LoginResponse) session.getAttribute(login_ticket);
+        LoginResponse loginResponse = (LoginResponse) session.getAttribute(value);
         if(loginResponse!=null){
             return JSON.toJSONString(new Result(200,"-",loginResponse));
         }else{
@@ -88,7 +99,7 @@ public class LoginController {
 
     @RequestMapping("/exit")
     @ResponseBody
-    public String exit(@RequestParam LoginDto loginDto, HttpServletRequest request,HttpServletResponse response){
+    public String exit(HttpServletRequest request,HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
         for(Cookie subCookie : cookies){
             if(subCookie.getName().contains("t_")){
@@ -130,5 +141,29 @@ public class LoginController {
     public String sendCode(@RequestBody LoginDto loginDto){
         String s = loginService.sendCode(loginDto);
         return JSON.toJSONString(new Result(200,"-",s));
+    }
+
+
+    //写一个md5加密的方法
+    public static String md5(String plainText) {
+        //定义一个字节数组
+        byte[] secretBytes = null;
+        try {
+            // 生成一个MD5加密计算摘要
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //对字符串进行加密
+            md.update(plainText.getBytes());
+            //获得加密后的数据
+            secretBytes = md.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("没有md5这个算法！");
+        }
+        //将加密后的数据转换为16进制数字
+        String md5code = new BigInteger(1, secretBytes).toString(16);// 16进制数字
+        // 如果生成数字未满32位，需要前面补0
+        for (int i = 0; i < 32 - md5code.length(); i++) {
+            md5code = "0" + md5code;
+        }
+        return md5code;
     }
 }
