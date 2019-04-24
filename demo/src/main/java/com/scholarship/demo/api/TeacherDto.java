@@ -6,5 +6,4 @@ import lombok.Data;
 public class TeacherDto {
     private String account;
     private String type;
-    private String year;
 }

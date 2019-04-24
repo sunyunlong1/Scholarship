@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface AdminDao {
 
-    @Select({"<script> select count(1) from scholarship where type = #{type} and time like CONCAT('%',#{year},'%') and twoApproval = #{twoApproval} </script>"})
+    @Select({"<script> select count(1) from scholarship where type = #{type} and time = #{year} and twoApproval = #{twoApproval} </script>"})
     @ResultType(java.lang.Integer.class)
     Integer selectSum(String type,String year,String twoApproval);
 
@@ -24,7 +24,8 @@ public interface AdminDao {
     @ResultType(Student.class)
     Student selectByAccount(String studentId);
 
-    @Select({"<script> select * from judges where judgesId = #{judgesId} </script>"})
+    @Select({"<script> select * from judges  </script>"})
     @ResultType(Judges.class)
-    Judges selectByJAccount(String judgesId);
+    List<Judges> selectByJAccount();
+
 }

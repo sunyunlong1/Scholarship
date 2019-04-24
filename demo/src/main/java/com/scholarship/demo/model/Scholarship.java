@@ -9,9 +9,8 @@ public class Scholarship {
     private String type;
     private String studentId;
     private String state;
-    private String teacherId;
-    private String judgesId;
     private String oneApproval;
+    private String introduce;
     private String reason;
     private String twoApproval;
     private String major;

@@ -6,5 +6,4 @@ import lombok.Data;
 public class AdminDto {
 
     private String type;
-    private String year;
 }

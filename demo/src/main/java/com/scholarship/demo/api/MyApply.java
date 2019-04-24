@@ -7,7 +7,8 @@ public class MyApply {
 
     private String applyType;
     private String name;
+    private String account;
     private String major;
     private String state;
-    private String year;
+    private String key;
 }

@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class JudgesApprovalDto {
-    private String studentId;
-    private String applyType;
-    private String time;
+    private String key;
     private String twoApproval;
 }

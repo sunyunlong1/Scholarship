@@ -37,10 +37,10 @@ public interface StudentService {
 
     /**
      * 编辑接口
-     * @param name
+     * @param key
      * @return
      */
-    OnlineDto edit(String name,String applyType,String year);
+    OnlineDto edit(String key);
 
     /**
      * 成绩查询

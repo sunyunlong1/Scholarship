@@ -8,26 +8,37 @@ import java.util.List;
 @Mapper
 public interface StudentDao {
 
-    @Update({"<script> " +
-            "update student " +
-            "<set> " +
-            "major = #{s.major},className = #{s.className},idNumber = {s.idNumber},email = #{s.email},telephoneNumber = #{s.telephoneNumber},politicalOutlook = #{s.politicalOutlook},sex = #{s.sex},address = #{s.address},dateOfBirth = #{dateOfBirth},fGPA = #{s.fGPA},sGPA = #{s.sGPA}  " +
-            "</set> " +
-            "where studentId = #{s.studentId} " +
+    @Insert({"<script> " +
+            "insert into studentApply (name,studentId,major,className,idNumber,email,telephoneNumber,politicalOutlook,sex,address,dateOfBirth,fGPA,sGPA)  " +
+            "values(#{s.name},#{s.studentId},#{s.major},#{s.className},#{s.idNumber},#{s.email},#{s.telephoneNumber},#{s.politicalOutlook},#{s.sex},#{s.address},#{s.dateOfBirth},#{s.fGPA},#{s.sGPA})"+
             "</script>"})
-    void updateInf(@Param("s") Student student);
-
-    @Insert({"<script> insert into scholarship (type,studentId,isSave,major) values (#{type},#{studentId},#{isSave},#{major})</script>"})
     @ResultType(java.lang.Integer.class)
-    Integer insertScholarship(String type,String studentId,String isSave,String major);
+    Integer insertInf(@Param("s") StudentApply student);
 
 
-    @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major} </set> where type = #{type} and studentId = #{studentId} </script>"})
-    void updateScholarship(String type,String studentId,String isSave,String major);
+    @Update({"<script> update studentApply " +
+            "<set> " +
+            "major = #{s.major},name = #{s.name},className = #{s.className},idNumber = #{s.idNumber},email = #{s.email},telephoneNumber = #{s.telephoneNumber},politicalOutlook = #{s.politicalOutlook},sex = #{s.sex},address = #{s.address},dateOfBirth = #{s.dateOfBirth},fGPA = #{s.fGPA},sGPA = #{s.sGPA} " +
+            "</set> " +
+            "where studentId = #{s.studentId} </script>"})
+    void updateInf(@Param("s") StudentApply student);
+
+    @Insert({"<script> insert into scholarship (type,studentId,isSave,major,time,introduce) values (#{type},#{studentId},#{isSave},#{major},#{time},#{introduce}</script>"})
+    @ResultType(java.lang.Integer.class)
+    Integer insertScholarship(String type,String studentId,String isSave,String major,String time,String introduce);
+
+
+    @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major},time = #{time},introduce = #{introduce} </set> where type = #{type} and studentId = #{studentId} </script>"})
+    void updateScholarship(String type,String studentId,String isSave,String major,String time,String introduce);
 
     @Select({"<script> select * from student where studentId = #{studentId} </script>"})
     @ResultType(Student.class)
     Student selectBySid(String studentId);
+
+
+    @Select({"<script> select * from studentApply where studentId = #{studentId} </script>"})
+    @ResultType(StudentApply.class)
+    StudentApply selectBySApplyid(String studentId);
 
     @Select({"<script> select * from teacher where teacherId = #{teacherId} </script>"})
     @ResultType(Teacher.class)
@@ -45,13 +56,13 @@ public interface StudentDao {
     @ResultType(Scholarship.class)
     List<Scholarship> selectByStudentId(String studentId);
 
-    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{applyType} and time CONCAT('%',#{year},'%') </script>"})
+    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{applyType} and time like CONCAT('%',#{year},'%') </script>"})
     @ResultType(Scholarship.class)
     Scholarship selectBySidAndApplyType(String studentId,String applyType,String year);
 
-    @Select({"<script> select * from student where name = #{userName} </script>"})
-    @ResultType(Student.class)
-    Student selectByName(String userName);
+    @Select({"<script> select * from studentApply where studentId = #{studentId} </script>"})
+    @ResultType(StudentApply.class)
+    StudentApply selectByName(String studentId);
 
 
     @Select({"<script> select * from scholarship where studentId = #{studentId} </script>"})

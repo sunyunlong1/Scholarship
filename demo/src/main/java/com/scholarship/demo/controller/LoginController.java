@@ -73,7 +73,7 @@ public class LoginController {
             }
             return JSON.toJSONString(new Result(200,"登陆成功",login));
         }else{
-            return JSON.toJSONString(new Result(405,"登陆失败",""));
+            return JSON.toJSONString(new Result(405,"密码错误",""));
         }
     }
 

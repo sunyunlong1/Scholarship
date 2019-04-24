@@ -5,9 +5,8 @@ import lombok.Data;
 @Data
 public class JMyApprovalRep {
 
-    private String studentId;
+    private String name;
     private String type;
     private String twoApproval;
     private String time;
-    private String major;
 }

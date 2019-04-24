@@ -118,7 +118,6 @@ public class UtilsServiceImpl implements UtilsService {
         String strCode = "";
         while (codeLen > 0) {
             int charCode = randomCode.nextInt(9);
-            System.out.println(charCode);
             strCode += charCode;
             codeLen--;
         }

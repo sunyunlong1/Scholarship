@@ -8,4 +8,5 @@ public class TeacherResponseDto {
     private String time;
     private String studentId;
     private String type;
+    private String key;
 }

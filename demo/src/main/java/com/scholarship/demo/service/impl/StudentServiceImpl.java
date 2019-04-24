@@ -6,8 +6,11 @@ import com.scholarship.demo.model.*;
 import com.scholarship.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -52,43 +55,50 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String onlineApply(OnlineDto onlineDto) {
-
-        Scholarship scholarship = studentDao.selectBySidAndApplyType(onlineDto.getStudentId(), onlineDto.getApplyType(),onlineDto.getYear());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String time = df.format(new Date());
+        SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
+        String year = df2.format(new Date());
+        Scholarship scholarship = studentDao.selectBySidAndApplyType(onlineDto.getStudentId(), onlineDto.getApplyType(),year);
         if(scholarship == null){
-            Student student = new Student();
-            student.setAddress(onlineDto.getAddress());
-            student.setEmail(onlineDto.getEmail());
-            student.setSex(onlineDto.getSex());
-            student.setClassName(onlineDto.getClassName());
-            student.setDateOfBirth(onlineDto.getDateOfBirth());
-            student.setIdNumber(onlineDto.getIdNumber());
-            student.setMajor(onlineDto.getMajor());
-            student.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
-            student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
-            student.setFGPA(onlineDto.getFGPA());
-            student.setSGPA(onlineDto.getSGPA());
-            studentDao.updateInf(student);
-            Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
+            StudentApply studentApply = new StudentApply();
+            studentApply.setName(onlineDto.getName());
+            studentApply.setStudentId(onlineDto.getStudentId());
+            studentApply.setAddress(onlineDto.getAddress());
+            studentApply.setEmail(onlineDto.getEmail());
+            studentApply.setSex(onlineDto.getSex());
+            studentApply.setClassName(onlineDto.getClassName());
+            studentApply.setDateOfBirth(onlineDto.getDateOfBirth());
+            studentApply.setIdNumber(onlineDto.getIdNumber());
+            studentApply.setMajor(onlineDto.getMajor());
+            studentApply.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
+            studentApply.setTelephoneNumber(onlineDto.getTelephoneNumber());
+            studentApply.setFGPA(onlineDto.getFgpa());
+            studentApply.setSGPA(onlineDto.getSgpa());
+            studentDao.insertInf(studentApply);
+            Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor(),time,onlineDto.getIntroduce());
             if (integer > 0) {
                 return onlineDto.getIsSave() + "成功";
             } else {
                 return onlineDto.getIsSave() + "失败";
             }
         }else {
-            Student student = new Student();
-            student.setAddress(onlineDto.getAddress());
-            student.setEmail(onlineDto.getEmail());
-            student.setSex(onlineDto.getSex());
-            student.setClassName(onlineDto.getClassName());
-            student.setDateOfBirth(onlineDto.getDateOfBirth());
-            student.setIdNumber(onlineDto.getIdNumber());
-            student.setMajor(onlineDto.getMajor());
-            student.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
-            student.setTelephoneNUmb(onlineDto.getTelephoneNumber());
-            student.setFGPA(onlineDto.getFGPA());
-            student.setSGPA(onlineDto.getSGPA());
-            studentDao.updateInf(student);
-            studentDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor());
+            StudentApply studentApply = new StudentApply();
+            studentApply.setName(onlineDto.getName());
+            studentApply.setStudentId(onlineDto.getStudentId());
+            studentApply.setAddress(onlineDto.getAddress());
+            studentApply.setEmail(onlineDto.getEmail());
+            studentApply.setSex(onlineDto.getSex());
+            studentApply.setClassName(onlineDto.getClassName());
+            studentApply.setDateOfBirth(onlineDto.getDateOfBirth());
+            studentApply.setIdNumber(onlineDto.getIdNumber());
+            studentApply.setMajor(onlineDto.getMajor());
+            studentApply.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
+            studentApply.setTelephoneNumber(onlineDto.getTelephoneNumber());
+            studentApply.setFGPA(onlineDto.getFgpa());
+            studentApply.setSGPA(onlineDto.getSgpa());
+            studentDao.updateInf(studentApply);
+            studentDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), onlineDto.getIsSave(),onlineDto.getMajor(),time,onlineDto.getIntroduce());
             return onlineDto.getIsSave() + "成功";
         }
     }
@@ -100,20 +110,33 @@ public class StudentServiceImpl implements StudentService {
         for (Scholarship scholarship : scholarships) {
             MyApply myApply = new MyApply();
             Student student = studentDao.selectBySid(scholarship.getStudentId());
-            myApply.setApplyType(scholarship.getType());
+            if(scholarship.getType().equals("01")){
+                myApply.setApplyType("一等奖学金");
+            }else if(scholarship.getType().equals("02")){
+                myApply.setApplyType("二等奖学金");
+            }else if(scholarship.getType().equals("03")){
+                myApply.setApplyType("三等奖学金");
+            }else if(scholarship.getType().equals("04")){
+                myApply.setApplyType("国家励志奖学金");
+            }else if (scholarship.getType().equals("05")){
+                myApply.setApplyType("国家助学金");
+            }
             myApply.setMajor(student.getMajor());
             myApply.setName(student.getName());
-            myApply.setState(scholarship.getState());
+            myApply.setState(scholarship.getIsSave());
+            myApply.setKey(scholarship.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
             resultList.add(myApply);
         }
         return resultList;
     }
 
     @Override
-    public OnlineDto edit(String name, String applyType,String year) {
+    public OnlineDto edit(String key) {
+        String[] split = key.split("::");
+
         OnlineDto onlineDto = new OnlineDto();
-        Student student = studentDao.selectByName(name);
-        Scholarship scholarship = studentDao.selectBySidAndApplyType(student.getStudentId(), applyType,year);
+        StudentApply student = studentDao.selectByName(split[0]);
+        Scholarship scholarship = studentDao.selectBySidAndApplyType(student.getStudentId(), split[1],split[2]);
         onlineDto.setAddress(student.getAddress());
         onlineDto.setApplyType(scholarship.getType());
         onlineDto.setClassName(student.getClassName());
@@ -135,7 +158,17 @@ public class StudentServiceImpl implements StudentService {
         List<ScoreQueryResponse> responseList = new ArrayList<>();
         for(Scholarship scholarship : scholarshipList) {
             ScoreQueryResponse response = new ScoreQueryResponse();
-            response.setApplyType(scholarship.getType());
+            if(scholarship.getType().equals("01")){
+                response.setApplyType("一等奖学金");
+            }else if(scholarship.getType().equals("02")){
+                response.setApplyType("二等奖学金");
+            }else if(scholarship.getType().equals("03")){
+                response.setApplyType("三等奖学金");
+            }else if(scholarship.getType().equals("04")){
+                response.setApplyType("国家励志奖学金");
+            }else if (scholarship.getType().equals("05")){
+                response.setApplyType("国家助学金");
+            }
             response.setReason(scholarship.getReason());
             response.setAvg(scholarship.getIsLand());
             Student student = studentDao.selectBySid(scholarship.getStudentId());

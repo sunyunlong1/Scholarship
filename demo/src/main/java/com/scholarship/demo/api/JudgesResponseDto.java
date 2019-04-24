@@ -6,6 +6,9 @@ import lombok.Data;
 public class JudgesResponseDto {
     private String name;
     private String time;
-    private String studentId;
     private String type;
+    private String key;
+    private String fgpa;
+    private String sgpa;
+    private String introduce;
 }

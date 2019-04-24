@@ -5,6 +5,7 @@ import com.scholarship.demo.dao.StudentDao;
 import com.scholarship.demo.dao.TeacherDao;
 import com.scholarship.demo.model.Scholarship;
 import com.scholarship.demo.model.Student;
+import com.scholarship.demo.model.StudentApply;
 import com.scholarship.demo.model.Teacher;
 import com.scholarship.demo.service.TeacherService;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -12,7 +13,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -25,15 +28,17 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherResponse applyManager(TeacherDto teacherDto) {
+        SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
+        String year = df2.format(new Date());
         TeacherResponse result = new TeacherResponse();
         Teacher teacher = studentDao.selectByTid(teacherDto.getAccount());
-        List<Student> students = teacherDao.selectByMajor(teacher.getMajor());
+        List<StudentApply> students = teacherDao.selectByMajor(teacher.getMajor());
         List<TeacherResponseDto> resultList = new ArrayList<>();
         int isPass = 0;
         int notPass = 0;
-        for(Student student : students){
+        for(StudentApply student : students){
             TeacherResponseDto response = new TeacherResponseDto();
-            Scholarship scholarship = teacherDao.selectBySIdAndType(student.getStudentId(), teacherDto.getType(),teacherDto.getYear());
+            Scholarship scholarship = teacherDao.selectBySIdAndType(student.getStudentId(), teacherDto.getType(),year);
             if(scholarship.getOneApproval().equals("通过")){
                 isPass++;
             }else if(scholarship.getOneApproval().equals("回绝")){
@@ -43,6 +48,7 @@ public class TeacherServiceImpl implements TeacherService {
             response.setStudentId(student.getStudentId());
             response.setType(scholarship.getType());
             response.setTime(scholarship.getTime());
+            response.setKey(student.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
             resultList.add(response);
         }
         result.setResponseDtoList(resultList);
@@ -53,10 +59,11 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherDetailsRep details(TeacherDetailsDto teacherDetailsDto) {
-        Scholarship scholarship = teacherDao.selectBySIdAndType(teacherDetailsDto.getStudentId(), teacherDetailsDto.getType(), teacherDetailsDto.getTime());
-        Student student = studentDao.selectBySid(scholarship.getStudentId());
+        String[] split = teacherDetailsDto.getKey().split("::");
+        Scholarship scholarship = teacherDao.selectBySIdAndType(split[0], split[1], split[2]);
+        StudentApply studentApply = studentDao.selectBySApplyid(scholarship.getStudentId());
         TeacherDetailsRep result = new TeacherDetailsRep();
-        BeanUtils.copyProperties(student,result);
+        BeanUtils.copyProperties(studentApply,result);
         result.setApplyType(scholarship.getType());
         result.setTime(scholarship.getTime());
         return result;
@@ -64,7 +71,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public String approval(ApprovalDto approvalDto) {
-        teacherDao.updateOneApproval(approvalDto.getStudentId(),approvalDto.getApplyType(),approvalDto.getTime(),approvalDto.getIsPass(),approvalDto.getReason());
+        String[] split = approvalDto.getKey().split("::");
+        teacherDao.updateOneApproval(split[0],split[1],split[2],approvalDto.getIsPass(),approvalDto.getReason());
         return "审批成功";
     }
 
@@ -72,9 +80,6 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Student> findInf(TeacherFIndDto teacherFIndDto) {
         Teacher teacher = studentDao.selectByTid(teacherFIndDto.getAccount());
         List<Student> inf = teacherDao.findInf(teacherFIndDto.getStudentId(), teacherFIndDto.getName(), teacher.getMajor());
-        for (Student student : inf){
-            student.setPassword("");
-        }
         return inf;
     }
 }
