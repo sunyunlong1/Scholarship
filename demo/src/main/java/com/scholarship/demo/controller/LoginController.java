@@ -102,7 +102,7 @@ public class LoginController {
     public String exit(HttpServletRequest request,HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
         for(Cookie subCookie : cookies){
-            if(subCookie.getName().contains("t_")){
+            if(subCookie.getName().equals("login_ticket")){
                 subCookie.setMaxAge(0);
                 subCookie.setPath("/");
                 response.addCookie(subCookie);
