@@ -23,19 +23,20 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String sendCode(LoginDto loginDto) {
+        String s = "";
         if (loginDto.getRole().equals("学生")) {
             Student student = studentDao.selectBySid(loginDto.getAccount());
-            String s = utilsService.sendMail(student.getEmail(), "验证码");
+             s = utilsService.sendMail(student.getEmail(), "验证码");
         } else if (loginDto.getRole().equals("老师")) {
             Teacher teacher = studentDao.selectByTid(loginDto.getAccount());
-            String s = utilsService.sendMail(teacher.getEmail(), "验证码");
+             s = utilsService.sendMail(teacher.getEmail(), "验证码");
         } else if (loginDto.getRole().equals("评委")) {
             Judges judges = studentDao.selectByJid(loginDto.getAccount());
-            String s = utilsService.sendMail(judges.getEmail(), "验证码");
+             s = utilsService.sendMail(judges.getEmail(), "验证码");
         } else {
             Admin admin = studentDao.selectByAid(loginDto.getAccount());
-            String s = utilsService.sendMail(admin.getEmail(), "验证码");
+             s = utilsService.sendMail(admin.getEmail(), "验证码");
         }
-        return "发送成功";
+        return s;
     }
 }
