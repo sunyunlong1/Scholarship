@@ -8,4 +8,5 @@ public class TeacherFIndDto {
     private String account;
     private String studentId;
     private String name;
+    private String college;
 }

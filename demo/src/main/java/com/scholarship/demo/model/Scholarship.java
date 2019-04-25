@@ -14,6 +14,7 @@ public class Scholarship {
     private String reason;
     private String twoApproval;
     private String major;
+    private String college;
     private String isSave;
     private String isLand;
     private String time;

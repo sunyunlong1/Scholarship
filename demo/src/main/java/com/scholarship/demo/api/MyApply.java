@@ -9,6 +9,7 @@ public class MyApply {
     private String name;
     private String account;
     private String major;
+    private String college;
     private String state;
     private String key;
 }

@@ -26,13 +26,12 @@ public class JudgesServiceImpl implements JudgesService {
         SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
         String year = df2.format(new Date());
         List<JudgesResponseDto> resultList = new ArrayList<>();
-        List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "通过");
+        List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过");
         int index = 1;
         for (Scholarship scholarship : scholarships){
             JudgesResponseDto judgesResponse = new JudgesResponseDto();
             StudentApply student = judgesDao.selectById(scholarship.getStudentId());
             judgesResponse.setName("学生"+index);
-            //judgesResponse.setStudentId(student.getStudentId());
             judgesResponse.setKey(scholarship.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
             judgesResponse.setTime(scholarship.getTime());
             if(scholarship.getType().equals("01")){
@@ -49,6 +48,7 @@ public class JudgesServiceImpl implements JudgesService {
             judgesResponse.setFgpa(student.getFGPA());
             judgesResponse.setSgpa(student.getSGPA());
             judgesResponse.setIntroduce(scholarship.getIntroduce());
+            judgesResponse.setReason(scholarship.getReason());
             resultList.add(judgesResponse);
             index++;
         }
@@ -71,16 +71,23 @@ public class JudgesServiceImpl implements JudgesService {
     @Override
     public String approval(JudgesApprovalDto judgesApprovalDto) {
         String[] split = judgesApprovalDto.getKey().split("::");
-        judgesDao.updateTwoApproval(split[0],split[1],split[2],judgesApprovalDto.getTwoApproval(),"通过");
+        judgesDao.updateTwoApproval(split[0],split[1],split[2],"复审通过","初审通过");
         return "审批成功";
     }
 
     @Override
-    public List<JMyApprovalRep> myApproval(JudgesDto judgesDto) {
+    public String notApproval(JudgesApprovalDto judgesApprovalDto) {
+        String[] split = judgesApprovalDto.getKey().split("::");
+        judgesDao.updateTwoApproval(split[0],split[1],split[2],"复审未通过","初审通过");
+        return "审批成功";
+    }
+
+    @Override
+    public List<JMyApprovalRep> myApproval() {
         SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
         String year = df2.format(new Date());
         List<JMyApprovalRep> resultList = new ArrayList<>();
-        List<Scholarship> scholarships = judgesDao.myApproval("通过", year);
+        List<Scholarship> scholarships = judgesDao.myApproval("初审通过", year);
         if (scholarships == null ||  scholarships.size() == 0){
             return null;
         }

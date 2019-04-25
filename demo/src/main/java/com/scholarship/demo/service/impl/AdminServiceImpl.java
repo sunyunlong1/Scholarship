@@ -27,16 +27,19 @@ public class AdminServiceImpl implements AdminService {
     UtilsService utilsService;
 
     @Override
-    public AdminDtoResponse release(AdminDto adminDto) {
+    public List<AdminTable>  release(AdminDto adminDto) {
 
         SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
         String year = df2.format(new Date());
-        AdminDtoResponse result = new AdminDtoResponse();
+       // AdminDtoResponse result = new AdminDtoResponse();
         List<AdminTable> adminTables = new ArrayList<>();
-        Integer integer = adminDao.selectSum(adminDto.getType(), year,"通过");
+        Integer integer = adminDao.selectSum(adminDto.getType(), year,"复审通过");
+        Integer sum = adminDao.selectALL(adminDto.getType(), year);
+
         AdminTable adminTable = new AdminTable();
         adminTable.setState("已审批");
         adminTable.setNum(integer.toString());
+        adminTable.setSum(sum.toString());
         adminTable.setYear(year);
         if(adminDto.getType().equals("01")){
             adminTable.setType("一等奖学金");
@@ -50,10 +53,11 @@ public class AdminServiceImpl implements AdminService {
             adminTable.setType("国家助学金");
         }
         adminTable.setKey(adminDto.getType()+"::"+year);
-        Integer sum = adminDao.selectSum(adminDto.getType(), year, "");
+        Integer sumno = adminDao.selectSum(adminDto.getType(), year, "");
         AdminTable table = new AdminTable();
         table.setState("未审批");
-        table.setNum(sum.toString());
+        table.setNum(sumno.toString());
+        table.setSum(sum.toString());
         table.setYear(year);
         if(adminDto.getType().equals("01")){
             table.setType("一等奖学金");
@@ -70,10 +74,9 @@ public class AdminServiceImpl implements AdminService {
         adminTables.add(adminTable);
         adminTables.add(table);
 
-        result.setAdminTableList(adminTables);
+//        result.setAdminTableList(adminTables);
         Integer total = integer+sum;
-        result.setSum(total.toString());
-        return result;
+        return adminTables;
     }
 
     @Override

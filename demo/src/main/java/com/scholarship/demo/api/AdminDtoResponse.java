@@ -8,5 +8,4 @@ import java.util.List;
 public class AdminDtoResponse {
 
     private List<AdminTable> adminTableList;
-    private String sum;
 }

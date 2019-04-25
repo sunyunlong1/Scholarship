@@ -6,7 +6,9 @@ import lombok.Data;
 public class ScoreQueryResponse {
 
     private String name;
-    private String avg;
-    private String applyType;
+    private String oneApproval;
     private String reason;
+    private String twoApproval;
+    private String applyType;
+
 }

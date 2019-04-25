@@ -11,4 +11,5 @@ public class JudgesResponseDto {
     private String fgpa;
     private String sgpa;
     private String introduce;
+    private String reason;
 }

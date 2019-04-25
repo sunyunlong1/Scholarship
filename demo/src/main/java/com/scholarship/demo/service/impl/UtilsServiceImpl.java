@@ -64,7 +64,7 @@ public class UtilsServiceImpl implements UtilsService {
                     return "旧密码输入错误";
                 }
             }
-            return "角色类型错误";
+            return "修改密码成功";
     }
 
     @Override

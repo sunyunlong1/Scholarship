@@ -42,10 +42,17 @@ public class JudgesController {
         return JSON.toJSONString(new Result(200,"-",result));
     }
 
+    @RequestMapping("/notApproval")
+    @ResponseBody
+    public String notApproval(@RequestBody JudgesApprovalDto judgesApprovalDto){
+        String result = judgesService.notApproval(judgesApprovalDto);
+        return JSON.toJSONString(new Result(200,"-",result));
+    }
+
     @RequestMapping("/myApproval")
     @ResponseBody
-    public String myApproval(@RequestBody JudgesDto judgesDto){
-        List<JMyApprovalRep> result = judgesService.myApproval(judgesDto);
+    public String myApproval(){
+        List<JMyApprovalRep> result = judgesService.myApproval();
         if (result == null){
             return JSON.toJSONString(new Result(200,"-","当前没有已审批记录"));
         }else{

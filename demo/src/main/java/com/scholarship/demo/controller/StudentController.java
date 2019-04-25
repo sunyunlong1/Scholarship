@@ -51,10 +51,10 @@ public class StudentController {
         return JSON.toJSONString(new Result(200,"-",myApplies));
     }
 
-    @RequestMapping("/edit")
+    @RequestMapping("/details")
     @ResponseBody
     public String edit(@RequestBody MyApply myApply){
-        OnlineDto onlineDto = studentService.edit(myApply.getKey());
+        OnlineDto onlineDto = studentService.details(myApply.getKey());
         return JSON.toJSONString(new Result(200,"-",onlineDto));
     }
 

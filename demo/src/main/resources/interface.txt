@@ -1,3 +1,4 @@
+所有接口 一等奖学金--->01，二等奖学金--->02，三等奖学金--->03，国家励志奖学金---->04，国家助学金---->05
 统一模块
 奖学金类型，下拉框(打算做成点击按钮作为参数传进来)
 localhost:8080/student/applyType
@@ -10,5 +11,356 @@ localhost:8080/student/applyType
         "国家励志奖学金",
         "国家助学金"
     ],
+    "message": "-"
+}
+发送验证码
+{
+	"account":"A19150292",
+	"role":"学生"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "688007",
+    "message": "-"
+}
+localhost:8080/changePassword
+{
+	"account":"A19150292",
+    "role":"学生",
+    "oldPassword":"123",
+    "newPassword":"456"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "修改密码成功",
+    "message": "-"
+}
+----------------------------------------------------
+学生模块
+我的申请查询
+localhost:8080/student/myApply
+{
+	"account":"A19150292"
+}
+返回json(applyType-->申请类型,college-->专业,key-->唯一标示，major-->学院,name-->申请人姓名,state-->状态)
+{
+    "code": 200,
+    "date": [
+        {
+            "applyType": "一等奖学金",
+            "college": "计算机科学与技术",
+            "key": "A19150292::01::2019",
+            "major": "电气与信息学院",
+            "name": "孙云龙",
+            "state": "已提交"
+        }
+    ],
+    "message": "-"
+}
+我的申请查看详情
+localhost:8080/student/details
+{
+	"key": "A19150292::01::2019"
+}
+返回JSON
+(address-->家庭地址,applyType-->申请类型,className-->班级,college-->专业,dateOfBirth-->出生年月,
+email-->邮箱,fgpa-->第一课堂绩点,idNumber-->身份证号,introduce-->申请奖学金概述，major-->学院,name-->申请人姓名
+politicalOutlook-->政治面貌,sex-->性别,sgpa-->第二课堂绩点，studentId-->申请人学号,telephoneNumber-->电话号码)
+{
+    "code": 200,
+    "date": {
+        "address": "黑龙江省绥化市北林区",
+        "applyType": "一等奖学金",
+        "className": "微机1504",
+        "college": "计算机科学与技术",
+        "dateOfBirth": "1999-05-16",
+        "email": "312241387@qq.com",
+        "fgpa": "4.0",
+        "idNumber": "232301199705161815",
+        "introduce": "学习优异",
+        "major": "电气与信息学院",
+        "name": "孙云龙",
+        "politicalOutlook": "团员",
+        "sex": "男",
+        "sgpa": "2.8",
+        "studentId": "A19150292",
+        "telephoneNumber": "18404552888"
+    },
+    "message": "-"
+}
+localhost:8080/student/onlineApply
+在线申请(字段信息与上面查看详情一样)
+{
+	"applyType":"01",
+    "studentId":"A19150292",
+    "name":"孙云龙",
+    "major":"电气与信息学院",
+    "college":"计算机科学与技术",
+    "className":"微机1504",
+    "sex":"男",
+    "politicalOutlook":"团员",
+    "address":"黑龙江省绥化市北林区",
+    "dateOfBirth":"1999-05-16",
+    "idNumber":"232301199705161815",
+    "telephoneNumber":"18404552888",
+    "email":"312241387@qq.com",
+    "fgpa":"4.0",
+    "sgpa":"2.8",
+    "isSave":"提交",
+    "introduce":"成绩优异"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "提交成功",
+    "message": "-"
+}
+localhost:8080/student/scoreQuery
+分数查询
+{
+	"account":"A19150292"
+}
+返回JSON
+(applyType-->申请类型,name-->申请类型,oneApproval-->初审情况,reason-->初审未通过原因,twoApproval-->复审通过)
+{
+    "code": 200,
+    "date": [
+        {
+            "applyType": "一等奖学金",
+            "name": "孙云龙",
+            "oneApproval": "初审通过",
+            "reason": "-",
+            "twoApproval": "复审通过"
+        }
+    ],
+    "message": "-"
+}
+------------------------------------------------------------------------------
+辅导员模块
+申请书初审界面查询(type默认传01)
+localhost:8080/teacher/applyManager
+{
+	"account":"A19150000",
+	"type":"01"
+}
+返回JSON
+isPass:已审批通过数量,sum:该奖学金类型的总数，responseDtoList{key-->唯一标示，name-->申请人姓名姓名,}
+{
+    "code": 200,
+    "date": {
+        "isPass": "1",
+        "responseDtoList": [
+            {
+                "key": "A19150292::01::2019",
+                "name": "孙云龙",
+                "studentId": "A19150292",
+                "time": "2019",
+                "type": "01"
+            }
+        ],
+        "sum": "1"
+    },
+    "message": "-"
+}
+申请书复审查看详情
+localhost:8080/teacher/details
+{
+	"key": "A19150292::01::2019"
+}
+返回JSON
+(字段含义全部和学生填写统一)
+{
+    "code": 200,
+    "date": {
+        "address": "黑龙江省绥化市北林区",
+        "applyType": "01",
+        "className": "微机1504",
+        "dateOfBirth": "1999-05-16",
+        "email": "312241387@qq.com",
+        "fGPA": "4.0",
+        "idNumber": "232301199705161815",
+        "introduce": "成绩优异",
+        "major": "电气与信息学院",
+        "name": "孙云龙",
+        "politicalOutlook": "团员",
+        "sGPA": "2.8",
+        "sex": "男",
+        "studentId": "A19150292",
+        "telephoneNumber": "18404552888",
+        "time": "2019"
+    },
+    "message": "-"
+}
+审批通过
+localhost:8080/teacher/approval
+(reason-->通过/未通过原因 在学生分数查询会看到 )
+{
+	"key": "A19150292::01::2019",
+	"reason":"学生成绩优异,信息属实给予通过"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "审批成功",
+    "message": "-"
+}
+申请驳回
+localhost:8080/teacher/notApproval
+(可以一键驳回)
+[
+	{
+			"key": "A19150292::01::2019",
+			"reason":"学生绩点造假，给予驳回"
+	}
+]
+返回JSON
+{
+    "code": 200,
+    "date": "审批成功",
+    "message": "-"
+}
+查询学生信息
+localhost:8080/teacher/findInf
+(account-->老师工号，studentId-->学生学号，name-->根据名字查询,college-->根据专业查询)
+{
+	"account":"A19150000",
+	"studentId":"A19150292",
+	"name":"孙云龙",
+    "college":"计算机科学与技术"
+}
+返回JSON
+{
+    "code": 200,
+    "date": [
+        {
+            "address": "北京市",
+            "className": "微机1504",
+            "college": "计算机科学与技术",
+            "dateOfBirth": "1997-05-16 00:00:00",
+            "email": "312241387@qq.com",
+            "fGPA": "4.0",
+            "id": 1,
+            "idNumber": "1234567890",
+            "major": "电气与信息学院",
+            "name": "孙云龙",
+            "password": "123",
+            "politicalOutlook": "团员",
+            "sGPA": "4.0",
+            "sex": "男",
+            "studentId": "A19150292",
+            "telephoneNumber": "18404552888"
+        }
+    ],
+    "message": "-"
+}
+-------------------------------------------------------
+评委模块
+localhost:8080/judges/approvalFind
+申请书复审查询
+{
+	"type":"01"
+}
+返回JSON
+{
+    "code": 200,
+    "date": [
+        {
+            "fgpa": "4.0",
+            "introduce": "成绩优异",
+            "key": "A19150292::01::2019",
+            "name": "学生1",
+            "reason": "学生成绩优异,信息属实给予通过",
+            "sgpa": "2.8",
+            "time": "2019",
+            "type": "一等奖学金"
+        }
+    ],
+    "message": "-"
+}
+localhost:8080/judges/approval
+审批通过
+{
+	"key": "A19150292::01::2019"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "审批成功",
+    "message": "-"
+}
+localhost:8080/judges/notApproval
+申请驳回
+{
+	"key": "A19150292::01::2019"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "审批成功",
+    "message": "-"
+}
+localhost:8080/judges/myApproval
+已审批
+不用传参数
+返回JSON
+{
+    "code": 200,
+    "date": [
+        {
+            "name": "学生1",
+            "time": "2019",
+            "twoApproval": "复审通过",
+            "type": "一等奖学金"
+        }
+    ],
+    "message": "-"
+}
+-------------------------------------------------------------
+管理员
+localhost:8080/admin/release
+{
+	"type":"01"
+}
+返回JSON
+{
+    "code": 200,
+    "date": [
+        {
+            "key": "01::2019",
+            "num": "1",
+            "state": "已审批",
+            "sum": "1",
+            "type": "一等奖学金",
+            "year": "2019"
+        },
+        {
+            "key": "01::2019",
+            "num": "0",
+            "state": "未审批",
+            "sum": "1",
+            "type": "一等奖学金",
+            "year": "2019"
+        }
+    ],
+    "message": "-"
+}
+localhost:8080/admin/submission
+发布公告
+{
+	"key": "01::2019"
+}
+返回JSON
+{
+    "code": 200,
+    "date": "发送成功",
+    "message": "-"
+}
+localhost:8080/admin/remind
+提醒评委
+{
+    "code": 200,
+    "date": "发送成功",
     "message": "-"
 }

@@ -10,6 +10,7 @@ public class Student {
     private String password;
     private String studentId;
     private String major;
+    private String college;
     private String className;
     private String idNumber;
     private String email;
@@ -20,4 +21,5 @@ public class Student {
     private String dateOfBirth;
     private String fGPA;
     private String sGPA;
+
 }

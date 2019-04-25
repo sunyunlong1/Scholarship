@@ -16,6 +16,10 @@ public interface AdminDao {
     @ResultType(java.lang.Integer.class)
     Integer selectSum(String type,String year,String twoApproval);
 
+    @Select({"<script> select count(1) from scholarship where type = #{type} and time = #{year} </script>"})
+    @ResultType(java.lang.Integer.class)
+    Integer selectALL(String type,String year);
+
     @Select({"<script> select * from scholarship where type = #{type} and time like CONCAT('%',#{year},'%') </script>"})
     @ResultType(Scholarship.class)
     List<Scholarship> selectByTAndY(String type,String year);

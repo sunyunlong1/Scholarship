@@ -32,54 +32,76 @@ public class TeacherServiceImpl implements TeacherService {
         String year = df2.format(new Date());
         TeacherResponse result = new TeacherResponse();
         Teacher teacher = studentDao.selectByTid(teacherDto.getAccount());
-        List<StudentApply> students = teacherDao.selectByMajor(teacher.getMajor());
+        List<Scholarship> scholarships = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year);
         List<TeacherResponseDto> resultList = new ArrayList<>();
         int isPass = 0;
-        int notPass = 0;
-        for(StudentApply student : students){
+        int sum = scholarships.size();
+        for(Scholarship scholarship : scholarships){
             TeacherResponseDto response = new TeacherResponseDto();
-            Scholarship scholarship = teacherDao.selectBySIdAndType(student.getStudentId(), teacherDto.getType(),year);
-            if(scholarship.getOneApproval().equals("通过")){
+            if(scholarship.getOneApproval().equals("初审通过")){
                 isPass++;
-            }else if(scholarship.getOneApproval().equals("回绝")){
-                notPass++;
             }
-            response.setName(student.getName());
-            response.setStudentId(student.getStudentId());
+            StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
+            response.setName(studentApply.getName());
+            response.setStudentId(studentApply.getStudentId());
             response.setType(scholarship.getType());
             response.setTime(scholarship.getTime());
-            response.setKey(student.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
+            response.setKey(studentApply.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
             resultList.add(response);
         }
         result.setResponseDtoList(resultList);
-        result.setIsPassSum(isPass+"");
-        result.setNoPassSum(notPass+"");
+        result.setIsPass(isPass+"");
+        result.setSum(sum+"");
         return result;
     }
 
     @Override
     public TeacherDetailsRep details(TeacherDetailsDto teacherDetailsDto) {
         String[] split = teacherDetailsDto.getKey().split("::");
-        Scholarship scholarship = teacherDao.selectBySIdAndType(split[0], split[1], split[2]);
-        StudentApply studentApply = studentDao.selectBySApplyid(scholarship.getStudentId());
         TeacherDetailsRep result = new TeacherDetailsRep();
-        BeanUtils.copyProperties(studentApply,result);
-        result.setApplyType(scholarship.getType());
-        result.setTime(scholarship.getTime());
+        Scholarship scholarship = teacherDao.selectBySIdAndType(split[0], split[1], split[2]);
+        if (scholarship != null){
+            StudentApply studentApply = studentDao.selectBySApplyid(scholarship.getStudentId());
+            if (studentApply != null){
+                BeanUtils.copyProperties(studentApply,result);
+                result.setApplyType(scholarship.getType());
+                result.setTime(scholarship.getTime());
+                result.setIntroduce(scholarship.getIntroduce());
+            }
+        }
+
         return result;
     }
 
     @Override
     public String approval(ApprovalDto approvalDto) {
         String[] split = approvalDto.getKey().split("::");
-        teacherDao.updateOneApproval(split[0],split[1],split[2],approvalDto.getIsPass(),approvalDto.getReason());
+        teacherDao.updateOneApproval(split[0],split[1],split[2],"初审通过",approvalDto.getReason());
         return "审批成功";
+    }
+
+
+    @Override
+    public String notApproval(List<ApprovalDto> approvalDtoList) {
+        if (approvalDtoList != null){
+            for (ApprovalDto approvalDto : approvalDtoList){
+                String[] split = approvalDto.getKey().split("::");
+                teacherDao.updateOneApproval(split[0],split[1],split[2],"初审未通过",approvalDto.getReason());
+            }
+            return "审批成功";
+        }else{
+            return "审批失败";
+        }
+
     }
 
     @Override
     public List<Student> findInf(TeacherFIndDto teacherFIndDto) {
+        List<Student> inf = null;
         Teacher teacher = studentDao.selectByTid(teacherFIndDto.getAccount());
-        List<Student> inf = teacherDao.findInf(teacherFIndDto.getStudentId(), teacherFIndDto.getName(), teacher.getMajor());
+        if (teacher !=null){
+           inf = teacherDao.findInf(teacherFIndDto.getStudentId(), teacherFIndDto.getName(), teacher.getMajor(),teacherFIndDto.getCollege());
+        }
         return inf;
     }
 }

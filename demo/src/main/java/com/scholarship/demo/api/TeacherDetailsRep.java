@@ -20,4 +20,5 @@ public class TeacherDetailsRep {
     private String fGPA;
     private String sGPA;
     private String time;
+    private String introduce;
 }

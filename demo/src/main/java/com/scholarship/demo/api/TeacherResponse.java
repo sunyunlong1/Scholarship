@@ -8,6 +8,6 @@ import java.util.List;
 public class TeacherResponse {
 
     private List<TeacherResponseDto> responseDtoList;
-    private String isPassSum;
-    private String noPassSum;
+    private String isPass;
+    private String sum;
 }

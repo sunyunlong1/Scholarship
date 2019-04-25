@@ -9,8 +9,8 @@ import java.util.List;
 public interface StudentDao {
 
     @Insert({"<script> " +
-            "insert into studentApply (name,studentId,major,className,idNumber,email,telephoneNumber,politicalOutlook,sex,address,dateOfBirth,fGPA,sGPA)  " +
-            "values(#{s.name},#{s.studentId},#{s.major},#{s.className},#{s.idNumber},#{s.email},#{s.telephoneNumber},#{s.politicalOutlook},#{s.sex},#{s.address},#{s.dateOfBirth},#{s.fGPA},#{s.sGPA})"+
+            "insert into studentApply (name,studentId,major,college,className,idNumber,email,telephoneNumber,politicalOutlook,sex,address,dateOfBirth,fGPA,sGPA)  " +
+            "values(#{s.name},#{s.studentId},#{s.major},#{s.college},#{s.className},#{s.idNumber},#{s.email},#{s.telephoneNumber},#{s.politicalOutlook},#{s.sex},#{s.address},#{s.dateOfBirth},#{s.fGPA},#{s.sGPA})"+
             "</script>"})
     @ResultType(java.lang.Integer.class)
     Integer insertInf(@Param("s") StudentApply student);
@@ -18,22 +18,23 @@ public interface StudentDao {
 
     @Update({"<script> update studentApply " +
             "<set> " +
-            "major = #{s.major},name = #{s.name},className = #{s.className},idNumber = #{s.idNumber},email = #{s.email},telephoneNumber = #{s.telephoneNumber},politicalOutlook = #{s.politicalOutlook},sex = #{s.sex},address = #{s.address},dateOfBirth = #{s.dateOfBirth},fGPA = #{s.fGPA},sGPA = #{s.sGPA} " +
+            "major = #{s.major},college = #{s.college},name = #{s.name},className = #{s.className},idNumber = #{s.idNumber},email = #{s.email},telephoneNumber = #{s.telephoneNumber},politicalOutlook = #{s.politicalOutlook},sex = #{s.sex},address = #{s.address},dateOfBirth = #{s.dateOfBirth},fGPA = #{s.fGPA},sGPA = #{s.sGPA} " +
             "</set> " +
             "where studentId = #{s.studentId} </script>"})
     void updateInf(@Param("s") StudentApply student);
 
-    @Insert({"<script> insert into scholarship (type,studentId,isSave,major,time,introduce) values (#{type},#{studentId},#{isSave},#{major},#{time},#{introduce}</script>"})
+    @Insert({"<script> insert into scholarship (type,studentId,isSave,major,college,time,introduce) values (#{type},#{studentId},#{isSave},#{major},#{college},#{time},#{introduce}</script>"})
     @ResultType(java.lang.Integer.class)
-    Integer insertScholarship(String type,String studentId,String isSave,String major,String time,String introduce);
+    Integer insertScholarship(String type,String studentId,String isSave,String major,String college,String time,String introduce);
 
 
-    @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major},time = #{time},introduce = #{introduce} </set> where type = #{type} and studentId = #{studentId} </script>"})
-    void updateScholarship(String type,String studentId,String isSave,String major,String time,String introduce);
+    @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major},college = #{college},time = #{time},introduce = #{introduce} </set> where type = #{type} and studentId = #{studentId} </script>"})
+    void updateScholarship(String type,String studentId,String isSave,String major,String college,String time,String introduce);
 
     @Select({"<script> select * from student where studentId = #{studentId} </script>"})
     @ResultType(Student.class)
     Student selectBySid(String studentId);
+
 
 
     @Select({"<script> select * from studentApply where studentId = #{studentId} </script>"})

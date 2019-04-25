@@ -8,6 +8,7 @@ public class StudentApply {
     private String name;
     private String studentId;
     private String major;
+    private String college;
     private String className;
     private String idNumber;
     private String email;

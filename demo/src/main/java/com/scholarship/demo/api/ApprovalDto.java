@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class ApprovalDto {
     private String key;
-    private String isPass;
-    private String reason;
+    private String reason = "";
 }

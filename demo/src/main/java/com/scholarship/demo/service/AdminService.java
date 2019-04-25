@@ -6,6 +6,8 @@ import com.scholarship.demo.api.AdminSubmissionDto;
 import com.scholarship.demo.api.AdminTable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface AdminService {
 
@@ -14,7 +16,7 @@ public interface AdminService {
      * @param adminDto
      * @return
      */
-    AdminDtoResponse release(AdminDto adminDto);
+    List<AdminTable> release(AdminDto adminDto);
 
     /**
      * 发布公告

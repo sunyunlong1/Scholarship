@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
@@ -23,7 +25,7 @@ public class AdminController {
     @RequestMapping("/release")
     @ResponseBody
     public String release(@RequestBody AdminDto adminDto){
-        AdminDtoResponse release = adminService.release(adminDto);
+        List<AdminTable> release = adminService.release(adminDto);
         return JSON.toJSONString(new Result(200,"-",release));
     }
 

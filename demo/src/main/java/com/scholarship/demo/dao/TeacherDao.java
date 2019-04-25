@@ -13,9 +13,9 @@ import java.util.List;
 @Mapper
 public interface TeacherDao {
 
-    @Select({"<script> select * from studentApply where major = #{major} </script>"})
-    @ResultType(StudentApply.class)
-    List<StudentApply> selectByMajor(String major);
+    @Select({"<script> select * from Scholarship where major = #{major} and type = #{type} and time = #{year} </script>"})
+    @ResultType(Scholarship.class)
+    List<Scholarship> selectByMajor(String major,String type,String year);
 
 
     @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time = #{time} </script>"})
@@ -26,7 +26,11 @@ public interface TeacherDao {
     void updateOneApproval(String studentId,String type,String time,String oneApproval,String reason);
 
 
-    @Select({"<script> select * from student where major = #{major}  <if test = 'studentId != null '> and studentId = #{studentId} </if> <if test = 'name != null'> and name = #{name} </if> </script>"})
+    @Select({"<script> select * from student where major = #{major}  <if test = 'studentId != null '> and studentId = #{studentId} </if> <if test = 'name != null'> and name = #{name} </if>  <if test = 'college != null'> and college = #{college} </if> </script>"})
     @ResultType(Student.class)
-    List<Student> findInf(String studentId,String name,String major);
+    List<Student> findInf(String studentId,String name,String major,String college);
+
+    @Select({"<script> select * from studentApply where studentId = #{studentId} </script>"})
+    @ResultType(StudentApply.class)
+    StudentApply selectById(String studentId);
 }

@@ -9,6 +9,7 @@ public class OnlineDto {
     private String studentId;
     private String name;
     private String major;
+    private String college;
     private String className;
     private String sex;
     private String politicalOutlook;
@@ -20,5 +21,4 @@ public class OnlineDto {
     private String fgpa;
     private String sgpa;
     private String introduce;
-    private String isSave;
 }

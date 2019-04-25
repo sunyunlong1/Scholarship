@@ -40,7 +40,7 @@ public interface StudentService {
      * @param key
      * @return
      */
-    OnlineDto edit(String key);
+    OnlineDto details(String key);
 
     /**
      * 成绩查询

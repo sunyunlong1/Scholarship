@@ -30,10 +30,18 @@ public interface JudgesService {
      */
     String approval(JudgesApprovalDto judgesApprovalDto);
 
+
     /**
-     * 评定专家我的审批
-     * @param judgesDto
+     * 评定专家复审不通过提交结果
+     * @param judgesApprovalDto
      * @return
      */
-    List<JMyApprovalRep> myApproval(JudgesDto judgesDto);
+    String notApproval(JudgesApprovalDto judgesApprovalDto);
+
+    /**
+     * 评定专家我的审批
+     * @param
+     * @return
+     */
+    List<JMyApprovalRep> myApproval();
 }

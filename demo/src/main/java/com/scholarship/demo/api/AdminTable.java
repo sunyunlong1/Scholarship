@@ -8,5 +8,6 @@ public class AdminTable {
     private String year;
     private String type;
     private String num;
+    private String sum;
     private String key;
 }

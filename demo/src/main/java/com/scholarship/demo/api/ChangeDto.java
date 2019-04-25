@@ -9,5 +9,4 @@ public class ChangeDto {
     private String role;
     private String oldPassword;
     private String newPassword;
-    private String vCode;
 }

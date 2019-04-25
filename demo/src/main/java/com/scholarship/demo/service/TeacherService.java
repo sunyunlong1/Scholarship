@@ -29,6 +29,14 @@ public interface TeacherService {
      */
     String approval(ApprovalDto approvalDto);
 
+
+    /**
+     * 辅导员驳回
+     * @param approvalDtoList
+     * @return
+     */
+    String notApproval(List<ApprovalDto> approvalDtoList);
+
     /**
      * 查询学生信息
      * @param teacherFIndDto

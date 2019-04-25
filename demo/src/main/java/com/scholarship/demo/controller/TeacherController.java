@@ -41,6 +41,13 @@ public class TeacherController {
         return JSON.toJSONString(new Result(200,"-",result));
     }
 
+    @RequestMapping("/notApproval")
+    @ResponseBody
+    public String notApproval(@RequestBody List<ApprovalDto> approvalDtoList){
+        String result = teacherService.notApproval(approvalDtoList);
+        return JSON.toJSONString(new Result(200,"-",result));
+    }
+
     @RequestMapping("/findInf")
     @ResponseBody
     public String findInf(@RequestBody TeacherFIndDto teacherFIndDto){
