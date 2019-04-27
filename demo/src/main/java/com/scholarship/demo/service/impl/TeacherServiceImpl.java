@@ -32,26 +32,31 @@ public class TeacherServiceImpl implements TeacherService {
         String year = df2.format(new Date());
         TeacherResponse result = new TeacherResponse();
         Teacher teacher = studentDao.selectByTid(teacherDto.getAccount());
+        if (teacher == null){
+            return null;
+        }
         List<Scholarship> scholarships = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year);
         List<TeacherResponseDto> resultList = new ArrayList<>();
         int isPass = 0;
-        int sum = scholarships.size();
-        for(Scholarship scholarship : scholarships){
-            TeacherResponseDto response = new TeacherResponseDto();
-            if(scholarship.getOneApproval().equals("初审通过")){
-                isPass++;
+        if(scholarships != null && scholarships.size()!=0){
+            int sum = scholarships.size();
+            for(Scholarship scholarship : scholarships){
+                TeacherResponseDto response = new TeacherResponseDto();
+                if(scholarship.getOneApproval().equals("初审通过")){
+                    isPass++;
+                }
+                StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
+                response.setName(studentApply.getName());
+                response.setStudentId(studentApply.getStudentId());
+                response.setType(scholarship.getType());
+                response.setTime(scholarship.getTime());
+                response.setKey(studentApply.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
+                resultList.add(response);
             }
-            StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
-            response.setName(studentApply.getName());
-            response.setStudentId(studentApply.getStudentId());
-            response.setType(scholarship.getType());
-            response.setTime(scholarship.getTime());
-            response.setKey(studentApply.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
-            resultList.add(response);
+            result.setResponseDtoList(resultList);
+            result.setIsPass(isPass+"");
+            result.setSum(sum+"");
         }
-        result.setResponseDtoList(resultList);
-        result.setIsPass(isPass+"");
-        result.setSum(sum+"");
         return result;
     }
 
@@ -83,7 +88,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public String notApproval(List<ApprovalDto> approvalDtoList) {
-        if (approvalDtoList != null){
+        if (approvalDtoList != null && approvalDtoList.size()!=0){
             for (ApprovalDto approvalDto : approvalDtoList){
                 String[] split = approvalDto.getKey().split("::");
                 teacherDao.updateOneApproval(split[0],split[1],split[2],"初审未通过",approvalDto.getReason());

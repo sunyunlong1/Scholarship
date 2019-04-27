@@ -28,30 +28,35 @@ public class JudgesServiceImpl implements JudgesService {
         List<JudgesResponseDto> resultList = new ArrayList<>();
         List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过");
         int index = 1;
-        for (Scholarship scholarship : scholarships){
-            JudgesResponseDto judgesResponse = new JudgesResponseDto();
-            StudentApply student = judgesDao.selectById(scholarship.getStudentId());
-            judgesResponse.setName("学生"+index);
-            judgesResponse.setKey(scholarship.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
-            judgesResponse.setTime(scholarship.getTime());
-            if(scholarship.getType().equals("01")){
-                judgesResponse.setType("一等奖学金");
-            }else if(scholarship.getType().equals("02")){
-                judgesResponse.setType("二等奖学金");
-            }else if(scholarship.getType().equals("03")){
-                judgesResponse.setType("三等奖学金");
-            }else if(scholarship.getType().equals("04")){
-                judgesResponse.setType("国家励志奖学金");
-            }else if (scholarship.getType().equals("05")){
-                judgesResponse.setType("国家助学金");
+        if(scholarships != null && scholarships.size()!=0){
+            for (Scholarship scholarship : scholarships){
+                JudgesResponseDto judgesResponse = new JudgesResponseDto();
+                StudentApply student = judgesDao.selectById(scholarship.getStudentId());
+                judgesResponse.setName("学生"+index);
+                judgesResponse.setKey(scholarship.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
+                judgesResponse.setTime(scholarship.getTime());
+                if(scholarship.getType().equals("01")){
+                    judgesResponse.setType("一等奖学金");
+                }else if(scholarship.getType().equals("02")){
+                    judgesResponse.setType("二等奖学金");
+                }else if(scholarship.getType().equals("03")){
+                    judgesResponse.setType("三等奖学金");
+                }else if(scholarship.getType().equals("04")){
+                    judgesResponse.setType("国家励志奖学金");
+                }else if (scholarship.getType().equals("05")){
+                    judgesResponse.setType("国家助学金");
+                }
+                if(student != null){
+                    judgesResponse.setFgpa(student.getFGPA());
+                    judgesResponse.setSgpa(student.getSGPA());
+                }
+                judgesResponse.setIntroduce(scholarship.getIntroduce());
+                judgesResponse.setReason(scholarship.getReason());
+                resultList.add(judgesResponse);
+                index++;
             }
-            judgesResponse.setFgpa(student.getFGPA());
-            judgesResponse.setSgpa(student.getSGPA());
-            judgesResponse.setIntroduce(scholarship.getIntroduce());
-            judgesResponse.setReason(scholarship.getReason());
-            resultList.add(judgesResponse);
-            index++;
         }
+
         return resultList;
     }
 

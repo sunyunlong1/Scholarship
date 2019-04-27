@@ -123,9 +123,11 @@ public class StudentServiceImpl implements StudentService {
                 } else if (scholarship.getType().equals("05")) {
                     myApply.setApplyType("国家助学金");
                 }
-                myApply.setMajor(student.getMajor());
-                myApply.setCollege(student.getCollege());
-                myApply.setName(student.getName());
+                if (student != null){
+                    myApply.setMajor(student.getMajor());
+                    myApply.setCollege(student.getCollege());
+                    myApply.setName(student.getName());
+                }
                 myApply.setState(scholarship.getIsSave());
                 myApply.setKey(scholarship.getStudentId() + "::" + scholarship.getType() + "::" + scholarship.getTime());
                 resultList.add(myApply);
@@ -154,19 +156,21 @@ public class StudentServiceImpl implements StudentService {
             } else if (scholarship.getType().equals("05")) {
                 onlineDto.setApplyType("国家助学金");
             }
-            onlineDto.setClassName(student.getClassName());
-            onlineDto.setDateOfBirth(student.getDateOfBirth());
-            onlineDto.setEmail(student.getEmail());
-            onlineDto.setIdNumber(student.getIdNumber());
-            onlineDto.setMajor(student.getMajor());
-            onlineDto.setCollege(student.getCollege());
-            onlineDto.setName(student.getName());
-            onlineDto.setPoliticalOutlook(student.getPoliticalOutlook());
-            onlineDto.setSex(student.getSex());
-            onlineDto.setStudentId(student.getStudentId());
-            onlineDto.setTelephoneNumber(student.getTelephoneNumber());
-            onlineDto.setFgpa(student.getFGPA());
-            onlineDto.setSgpa(student.getSGPA());
+            if (student != null){
+                onlineDto.setClassName(student.getClassName());
+                onlineDto.setDateOfBirth(student.getDateOfBirth());
+                onlineDto.setEmail(student.getEmail());
+                onlineDto.setIdNumber(student.getIdNumber());
+                onlineDto.setMajor(student.getMajor());
+                onlineDto.setCollege(student.getCollege());
+                onlineDto.setName(student.getName());
+                onlineDto.setPoliticalOutlook(student.getPoliticalOutlook());
+                onlineDto.setSex(student.getSex());
+                onlineDto.setStudentId(student.getStudentId());
+                onlineDto.setTelephoneNumber(student.getTelephoneNumber());
+                onlineDto.setFgpa(student.getFGPA());
+                onlineDto.setSgpa(student.getSGPA());
+            }
             onlineDto.setIntroduce(scholarship.getIntroduce());
         }
         return onlineDto;
@@ -176,6 +180,7 @@ public class StudentServiceImpl implements StudentService {
     public List<ScoreQueryResponse> scoreQuery(LoginDto loginDto) {
         List<Scholarship> scholarshipList = studentDao.findBySid(loginDto.getAccount());
         List<ScoreQueryResponse> responseList = new ArrayList<>();
+        if (scholarshipList != null && scholarshipList.size() != 0 )
         for (Scholarship scholarship : scholarshipList) {
             ScoreQueryResponse response = new ScoreQueryResponse();
             if (scholarship.getType().equals("01")) {
@@ -190,7 +195,9 @@ public class StudentServiceImpl implements StudentService {
                 response.setApplyType("国家助学金");
             }
             Student student = studentDao.selectBySid(scholarship.getStudentId());
-            response.setName(student.getName());
+            if (student != null){
+                response.setName(student.getName());
+            }
             response.setOneApproval(scholarship.getOneApproval().equals("") ? "-" : scholarship.getOneApproval());
             response.setReason(scholarship.getReason().equals("") ? "-" : scholarship.getReason());
             response.setTwoApproval(scholarship.getTwoApproval().equals("") ? "-" : scholarship.getTwoApproval());

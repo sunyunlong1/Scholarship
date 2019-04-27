@@ -1,7 +1,6 @@
 package com.scholarship.demo.service.impl;
 
 import com.scholarship.demo.api.AdminDto;
-import com.scholarship.demo.api.AdminDtoResponse;
 import com.scholarship.demo.api.AdminSubmissionDto;
 import com.scholarship.demo.api.AdminTable;
 import com.scholarship.demo.dao.AdminDao;
@@ -27,55 +26,55 @@ public class AdminServiceImpl implements AdminService {
     UtilsService utilsService;
 
     @Override
-    public List<AdminTable>  release(AdminDto adminDto) {
+    public List<AdminTable> release(AdminDto adminDto) {
 
         SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
         String year = df2.format(new Date());
-       // AdminDtoResponse result = new AdminDtoResponse();
+        // AdminDtoResponse result = new AdminDtoResponse();
         List<AdminTable> adminTables = new ArrayList<>();
-        Integer integer = adminDao.selectSum(adminDto.getType(), year,"复审通过");
+        Integer integer = adminDao.selectSum(adminDto.getType(), year, "复审通过");
         Integer sum = adminDao.selectALL(adminDto.getType(), year);
 
         AdminTable adminTable = new AdminTable();
         adminTable.setState("已审批");
-        adminTable.setNum(integer.toString());
-        adminTable.setSum(sum.toString());
+        adminTable.setNum(integer == 0 ? "0" : integer.toString());
+        adminTable.setSum(sum == 0 ? "0" : sum.toString());
         adminTable.setYear(year);
-        if(adminDto.getType().equals("01")){
+        if (adminDto.getType().equals("01")) {
             adminTable.setType("一等奖学金");
-        }else if(adminDto.getType().equals("02")){
+        } else if (adminDto.getType().equals("02")) {
             adminTable.setType("二等奖学金");
-        }else if(adminDto.getType().equals("03")){
+        } else if (adminDto.getType().equals("03")) {
             adminTable.setType("三等奖学金");
-        }else if(adminDto.getType().equals("04")){
+        } else if (adminDto.getType().equals("04")) {
             adminTable.setType("国家励志奖学金");
-        }else if (adminDto.getType().equals("05")){
+        } else if (adminDto.getType().equals("05")) {
             adminTable.setType("国家助学金");
         }
-        adminTable.setKey(adminDto.getType()+"::"+year);
+        adminTable.setKey(adminDto.getType() + "::" + year);
         Integer sumno = adminDao.selectSum(adminDto.getType(), year, "");
         AdminTable table = new AdminTable();
         table.setState("未审批");
-        table.setNum(sumno.toString());
-        table.setSum(sum.toString());
+        table.setNum(sumno == 0 ? "0" : sumno.toString());
+        table.setSum(sum == 0 ? "0" : sum.toString());
         table.setYear(year);
-        if(adminDto.getType().equals("01")){
+        if (adminDto.getType().equals("01")) {
             table.setType("一等奖学金");
-        }else if(adminDto.getType().equals("02")){
+        } else if (adminDto.getType().equals("02")) {
             table.setType("二等奖学金");
-        }else if(adminDto.getType().equals("03")){
+        } else if (adminDto.getType().equals("03")) {
             table.setType("三等奖学金");
-        }else if(adminDto.getType().equals("04")){
+        } else if (adminDto.getType().equals("04")) {
             table.setType("国家励志奖学金");
-        }else if (adminDto.getType().equals("05")){
+        } else if (adminDto.getType().equals("05")) {
             table.setType("国家助学金");
         }
-        table.setKey(adminDto.getType()+"::"+year);
+        table.setKey(adminDto.getType() + "::" + year);
         adminTables.add(adminTable);
         adminTables.add(table);
 
 //        result.setAdminTableList(adminTables);
-        Integer total = integer+sum;
+        Integer total = integer + sum;
         return adminTables;
     }
 
@@ -83,11 +82,11 @@ public class AdminServiceImpl implements AdminService {
     public String submission(AdminSubmissionDto adminSubmissionDto) {
         String[] split = adminSubmissionDto.getKey().split("::");
         Integer sum = adminDao.selectSum(split[0], split[1], "");
-        if(sum>0){
+        if (sum > 0) {
             return "还有未评价的记录，请提醒评委老师尽快评价";
-        }else{
+        } else {
             List<Scholarship> scholarships = adminDao.selectByTAndY(split[0], split[1]);
-            for (Scholarship scholarship : scholarships){
+            for (Scholarship scholarship : scholarships) {
                 Student student = adminDao.selectByAccount(scholarship.getStudentId());
                 String s = utilsService.sendMail(student.getEmail(), "发布");
             }
@@ -99,9 +98,14 @@ public class AdminServiceImpl implements AdminService {
     public String remind(AdminSubmissionDto adminSubmissionDto) {
         String[] split = adminSubmissionDto.getKey().split("::");
         List<Judges> judgesList = adminDao.selectByJAccount();
-        for (Judges judges : judgesList){
-            String s = utilsService.sendMail(judges.getEmail(), "提醒");
+        if(judgesList != null && judgesList.size() != 0){
+            for (Judges judges : judgesList) {
+                String s = utilsService.sendMail(judges.getEmail(), "提醒");
+            }
+            return "发送成功";
+        }else{
+            return "发送失败";
         }
-        return "发送成功";
+
     }
 }

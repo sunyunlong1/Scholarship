@@ -28,43 +28,42 @@ public class UtilsServiceImpl implements UtilsService {
     public static final String SMTP_163_PORT = "25";// 端口号,这个是163使用到的;QQ的应该是465或者875
 
 
-
     @Autowired
     StudentDao studentDao;
 
     @Override
     public String changePassword(ChangeDto changeDto) {
 
-            if(changeDto.getRole().equals("学生")){
-                Student student = studentDao.selectBySid(changeDto.getAccount());
-                if(student.getPassword().equals(changeDto.getOldPassword())){
-                    studentDao.updateSPassword(changeDto.getAccount(),changeDto.getNewPassword());
-                }else{
-                    return "旧密码输入错误";
-                }
-            }else if(changeDto.getRole().equals("老师")){
-                Teacher teacher = studentDao.selectByTid(changeDto.getAccount());
-                if(teacher.getPassword().equals(changeDto.getOldPassword())){
-                    studentDao.updateTPassword(changeDto.getAccount(),changeDto.getNewPassword());
-                }else{
-                    return "旧密码输入错误";
-                }
-            }else if(changeDto.getRole().equals("评委")){
-                Judges judges = studentDao.selectByJid(changeDto.getAccount());
-                if(judges.getPassword().equals(changeDto.getOldPassword())){
-                    studentDao.updateJPassword(changeDto.getAccount(),changeDto.getNewPassword());
-                }else{
-                    return "旧密码输入错误";
-                }
-            }else if(changeDto.getRole().equals("管理员")){
-                Admin admin = studentDao.selectByAid(changeDto.getAccount());
-                if(admin.getPassword().equals(changeDto.getOldPassword())){
-                    studentDao.updateAPassword(changeDto.getAccount(),changeDto.getNewPassword());
-                }else{
-                    return "旧密码输入错误";
-                }
+        if (changeDto.getRole().equals("学生")) {
+            Student student = studentDao.selectBySid(changeDto.getAccount());
+            if (student.getPassword().equals(changeDto.getOldPassword())) {
+                studentDao.updateSPassword(changeDto.getAccount(), changeDto.getNewPassword());
+            } else {
+                return "旧密码输入错误";
             }
-            return "修改密码成功";
+        } else if (changeDto.getRole().equals("老师")) {
+            Teacher teacher = studentDao.selectByTid(changeDto.getAccount());
+            if (teacher.getPassword().equals(changeDto.getOldPassword())) {
+                studentDao.updateTPassword(changeDto.getAccount(), changeDto.getNewPassword());
+            } else {
+                return "旧密码输入错误";
+            }
+        } else if (changeDto.getRole().equals("评委")) {
+            Judges judges = studentDao.selectByJid(changeDto.getAccount());
+            if (judges.getPassword().equals(changeDto.getOldPassword())) {
+                studentDao.updateJPassword(changeDto.getAccount(), changeDto.getNewPassword());
+            } else {
+                return "旧密码输入错误";
+            }
+        } else if (changeDto.getRole().equals("管理员")) {
+            Admin admin = studentDao.selectByAid(changeDto.getAccount());
+            if (admin.getPassword().equals(changeDto.getOldPassword())) {
+                studentDao.updateAPassword(changeDto.getAccount(), changeDto.getNewPassword());
+            } else {
+                return "旧密码输入错误";
+            }
+        }
+        return "修改密码成功";
     }
 
     @Override
@@ -89,20 +88,20 @@ public class UtilsServiceImpl implements UtilsService {
         try {
             message.setFrom(new InternetAddress(MY_EMAIL_ACCOUNT));
             // 收件人和抄送人
-             message.setRecipients(Message.RecipientType.TO, email);
+            message.setRecipients(Message.RecipientType.TO, email);
 //		message.setRecipients(Message.RecipientType.CC, MY_EMAIL_ACCOUNT);
             //newRandomCode = getNewRandomCode(6);
             newRandomCode = getNewRandomCode(6);
             // 内容(这个内容还不能乱写,有可能会被SMTP拒绝掉;多试几次吧)
-            if(content.equals("验证码")){
+            if (content.equals("验证码")) {
                 message.setSubject("东北农业大学奖学金评分系统密码修改");
-                message.setContent("<h1>"+"您的验证码为："+newRandomCode+"请勿告诉他人"+"</h1>", "text/html;charset=UTF-8");
-            }else if(content.equals("发布")){
+                message.setContent("<h1>" + "您的验证码为：" + newRandomCode + "请勿告诉他人" + "</h1>", "text/html;charset=UTF-8");
+            } else if (content.equals("发布")) {
                 message.setSubject("东北农业大学奖学金评分系统成绩查询提醒");
-                message.setContent("<h1>"+"同学您好，您的奖学金评分结果已经公布，请去官网查看！"+"</h1>", "text/html;charset=UTF-8");
-            }else if(content.equals("提醒")){
+                message.setContent("<h1>" + "同学您好，您的奖学金评分结果已经公布，请去官网查看！" + "</h1>", "text/html;charset=UTF-8");
+            } else if (content.equals("提醒")) {
                 message.setSubject("东北农业大学奖学金评分系统评分提醒");
-                message.setContent("<h1>"+"评委老师您好，您还有待审批的记录，请尽快审批，谢谢！"+"</h1>", "text/html;charset=UTF-8");
+                message.setContent("<h1>" + "评委老师您好，您还有待审批的记录，请尽快审批，谢谢！" + "</h1>", "text/html;charset=UTF-8");
             }
             message.setSentDate(new Date());
             message.saveChanges();
