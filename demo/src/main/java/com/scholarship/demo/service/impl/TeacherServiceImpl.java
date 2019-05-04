@@ -105,6 +105,15 @@ public class TeacherServiceImpl implements TeacherService {
         List<Student> inf = null;
         Teacher teacher = studentDao.selectByTid(teacherFIndDto.getAccount());
         if (teacher !=null){
+            if(teacherFIndDto.getStudentId() == null || teacherFIndDto.getStudentId().equals("")){
+                teacherFIndDto.setStudentId(null);
+            }
+            if(teacherFIndDto.getName() == null || teacherFIndDto.getName().equals("")){
+                teacherFIndDto.setName(null);
+            }
+            if(teacherFIndDto.getCollege() == null || teacherFIndDto.getCollege().equals("")){
+                teacherFIndDto.setCollege(null);
+            }
            inf = teacherDao.findInf(teacherFIndDto.getStudentId(), teacherFIndDto.getName(), teacher.getMajor(),teacherFIndDto.getCollege());
         }
         return inf;

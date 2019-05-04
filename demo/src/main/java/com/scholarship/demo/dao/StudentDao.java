@@ -23,7 +23,7 @@ public interface StudentDao {
             "where studentId = #{s.studentId} </script>"})
     void updateInf(@Param("s") StudentApply student);
 
-    @Insert({"<script> insert into scholarship (type,studentId,isSave,major,college,time,introduce) values (#{type},#{studentId},#{isSave},#{major},#{college},#{time},#{introduce}</script>"})
+    @Insert({"<script> insert into scholarship (type,studentId,isSave,major,college,time,introduce) values (#{type},#{studentId},#{isSave},#{major},#{college},#{time},#{introduce}) </script>"})
     @ResultType(java.lang.Integer.class)
     Integer insertScholarship(String type,String studentId,String isSave,String major,String college,String time,String introduce);
 

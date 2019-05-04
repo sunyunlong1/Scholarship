@@ -22,20 +22,28 @@ public class StudentServiceImpl implements StudentService {
         LoginResponse loginResponse = new LoginResponse();
         if (loginDto.getRole().equals("学生")) {
             Student student = studentDao.selectBySid(loginDto.getAccount());
-            loginResponse.setUserName(student.getName());
-            loginResponse.setUserType("student");
-        } else if (loginDto.getRole().equals("老师")) {
+            if(student!=null){
+                loginResponse.setUserName(student.getName());
+                loginResponse.setUserType("student");
+            }
+        } else if (loginDto.getRole().equals("教师")) {
             Teacher teacher = studentDao.selectByTid(loginDto.getAccount());
-            loginResponse.setUserName(teacher.getName());
-            loginResponse.setUserType("teacher");
+            if (teacher != null){
+                loginResponse.setUserName(teacher.getName());
+                loginResponse.setUserType("teacher");
+            }
         } else if (loginDto.getRole().equals("评委")) {
             Judges judges = studentDao.selectByJid(loginDto.getAccount());
-            loginResponse.setUserName(judges.getName());
-            loginResponse.setUserType("judges");
+            if(judges != null){
+                loginResponse.setUserName(judges.getName());
+                loginResponse.setUserType("judges");
+            }
         } else {
             Admin admin = studentDao.selectByAid(loginDto.getAccount());
-            loginResponse.setUserName(admin.getName());
-            loginResponse.setUserType("manager");
+            if (admin != null){
+                loginResponse.setUserName(admin.getName());
+                loginResponse.setUserType("manager");
+            }
         }
         return loginResponse;
     }
@@ -180,28 +188,29 @@ public class StudentServiceImpl implements StudentService {
     public List<ScoreQueryResponse> scoreQuery(LoginDto loginDto) {
         List<Scholarship> scholarshipList = studentDao.findBySid(loginDto.getAccount());
         List<ScoreQueryResponse> responseList = new ArrayList<>();
-        if (scholarshipList != null && scholarshipList.size() != 0 )
-        for (Scholarship scholarship : scholarshipList) {
-            ScoreQueryResponse response = new ScoreQueryResponse();
-            if (scholarship.getType().equals("01")) {
-                response.setApplyType("一等奖学金");
-            } else if (scholarship.getType().equals("02")) {
-                response.setApplyType("二等奖学金");
-            } else if (scholarship.getType().equals("03")) {
-                response.setApplyType("三等奖学金");
-            } else if (scholarship.getType().equals("04")) {
-                response.setApplyType("国家励志奖学金");
-            } else if (scholarship.getType().equals("05")) {
-                response.setApplyType("国家助学金");
+        if (scholarshipList != null && scholarshipList.size() != 0 ) {
+            for (Scholarship scholarship : scholarshipList) {
+                ScoreQueryResponse response = new ScoreQueryResponse();
+                if (scholarship.getType().equals("01")) {
+                    response.setApplyType("一等奖学金");
+                } else if (scholarship.getType().equals("02")) {
+                    response.setApplyType("二等奖学金");
+                } else if (scholarship.getType().equals("03")) {
+                    response.setApplyType("三等奖学金");
+                } else if (scholarship.getType().equals("04")) {
+                    response.setApplyType("国家励志奖学金");
+                } else if (scholarship.getType().equals("05")) {
+                    response.setApplyType("国家助学金");
+                }
+                Student student = studentDao.selectBySid(scholarship.getStudentId());
+                if (student != null){
+                    response.setName(student.getName());
+                }
+                response.setOneApproval(scholarship.getOneApproval().equals("") ? "-" : scholarship.getOneApproval());
+                response.setReason(scholarship.getReason().equals("") ? "-" : scholarship.getReason());
+                response.setTwoApproval(scholarship.getTwoApproval().equals("") ? "-" : scholarship.getTwoApproval());
+                responseList.add(response);
             }
-            Student student = studentDao.selectBySid(scholarship.getStudentId());
-            if (student != null){
-                response.setName(student.getName());
-            }
-            response.setOneApproval(scholarship.getOneApproval().equals("") ? "-" : scholarship.getOneApproval());
-            response.setReason(scholarship.getReason().equals("") ? "-" : scholarship.getReason());
-            response.setTwoApproval(scholarship.getTwoApproval().equals("") ? "-" : scholarship.getTwoApproval());
-            responseList.add(response);
         }
         return responseList;
     }
