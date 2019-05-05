@@ -62,7 +62,7 @@ public class LoginController {
         cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);
         LoginResponse login = studentService.login(loginDto);
-        if(login != null || !login.getUserName().equals("")){
+        if(login != null ){
             //String login_ticket = login.getUserType();
             HttpSession session = httpRequest.getSession();
             session.setMaxInactiveInterval(60*60*24);
@@ -73,7 +73,7 @@ public class LoginController {
             }
             return JSON.toJSONString(new Result(200,"登陆成功",login));
         }else{
-            return JSON.toJSONString(new Result(405,"密码错误",""));
+            return JSON.toJSONString(new Result(405,"密码错误或者账号不存在",login));
         }
     }
 

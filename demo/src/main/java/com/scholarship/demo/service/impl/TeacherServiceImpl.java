@@ -45,7 +45,17 @@ public class TeacherServiceImpl implements TeacherService {
                 StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
                 response.setName(studentApply.getName());
                 response.setStudentId(studentApply.getStudentId());
-                response.setType(scholarship.getType());
+                if(scholarship.getType().equals("01")){
+                    response.setType("一等奖学金");
+                }else if(scholarship.getType().equals("02")){
+                    response.setType("二等奖学金");
+                }else if(scholarship.getType().equals("03")){
+                    response.setType("三等奖学金");
+                }else if(scholarship.getType().equals("04")){
+                    response.setType("国家励志奖学金");
+                }else if (scholarship.getType().equals("05")){
+                    response.setType("国家助学金");
+                }
                 response.setTime(scholarship.getTime());
                 response.setKey(studentApply.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
                 resultList.add(response);

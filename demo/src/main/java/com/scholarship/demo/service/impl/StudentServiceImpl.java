@@ -19,33 +19,35 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public LoginResponse login(LoginDto loginDto) {
-        LoginResponse loginResponse = new LoginResponse();
+        LoginResponse loginResponse = null;
         if (loginDto.getRole().equals("学生")) {
             Student student = studentDao.selectBySid(loginDto.getAccount());
-            if(student!=null){
+            if(student!=null && student.getPassword().equals(loginDto.getPassword())){
+                loginResponse = new LoginResponse();
                 loginResponse.setUserName(student.getName());
                 loginResponse.setUserType("student");
                 loginResponse.setAccount(student.getStudentId());
             }
         } else if (loginDto.getRole().equals("教师")) {
             Teacher teacher = studentDao.selectByTid(loginDto.getAccount());
-            if (teacher != null){
+            if (teacher != null && teacher.getPassword().equals(loginDto.getPassword())){
+                loginResponse = new LoginResponse();
                 loginResponse.setUserName(teacher.getName());
                 loginResponse.setUserType("teacher");
                 loginResponse.setAccount(teacher.getTeacherId());
-
             }
         } else if (loginDto.getRole().equals("评委")) {
             Judges judges = studentDao.selectByJid(loginDto.getAccount());
-            if(judges != null){
+            if(judges != null && judges.getPassword().equals(loginDto.getPassword())){
+                loginResponse = new LoginResponse();
                 loginResponse.setUserName(judges.getName());
                 loginResponse.setUserType("judges");
                 loginResponse.setAccount(judges.getJudgesId());
-
             }
         } else {
             Admin admin = studentDao.selectByAid(loginDto.getAccount());
-            if (admin != null){
+            if (admin != null && admin.getPassword().equals(loginDto.getPassword())){
+                loginResponse = new LoginResponse();
                 loginResponse.setUserName(admin.getName());
                 loginResponse.setUserType("manager");
                 loginResponse.setAccount(admin.getAdminId());
