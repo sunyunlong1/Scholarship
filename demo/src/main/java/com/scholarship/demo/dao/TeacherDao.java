@@ -17,6 +17,9 @@ public interface TeacherDao {
     @ResultType(Scholarship.class)
     List<Scholarship> selectByMajor(String major,String type,String year,String oneApproval);
 
+    @Select({"<script> select * from Scholarship where major = #{major} and type = #{type} and time = #{year} </script>"})
+    @ResultType(Scholarship.class)
+    List<Scholarship> selectByTMajor(String major,String type,String year);
 
     @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time = #{time} </script>"})
     @ResultType(Scholarship.class)

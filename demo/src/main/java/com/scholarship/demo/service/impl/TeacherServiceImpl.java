@@ -38,9 +38,10 @@ public class TeacherServiceImpl implements TeacherService {
         List<Scholarship> scholarships = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year,"");
         List<TeacherResponseDto> resultList = new ArrayList<>();
         int isPass = 0;
+        List<Scholarship> scholarshipList1 = teacherDao.selectByTMajor(teacher.getMajor(), teacherDto.getType(), year);
         int sum = 0;
+        sum = scholarshipList1.size();
         if(scholarships != null && scholarships.size()!=0) {
-            sum = scholarships.size();
             for (Scholarship scholarship : scholarships) {
                 TeacherResponseDto response = new TeacherResponseDto();
                 StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
