@@ -38,35 +38,36 @@ public class TeacherServiceImpl implements TeacherService {
         List<Scholarship> scholarships = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year,"");
         List<TeacherResponseDto> resultList = new ArrayList<>();
         int isPass = 0;
-        if(scholarships != null && scholarships.size()!=0){
-            int sum = scholarships.size();
-            for(Scholarship scholarship : scholarships){
+        int sum = 0;
+        if(scholarships != null && scholarships.size()!=0) {
+            sum = scholarships.size();
+            for (Scholarship scholarship : scholarships) {
                 TeacherResponseDto response = new TeacherResponseDto();
                 StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
                 response.setName(studentApply.getName());
                 response.setStudentId(studentApply.getStudentId());
-                if(scholarship.getType().equals("01")){
+                if (scholarship.getType().equals("01")) {
                     response.setType("一等奖学金");
-                }else if(scholarship.getType().equals("02")){
+                } else if (scholarship.getType().equals("02")) {
                     response.setType("二等奖学金");
-                }else if(scholarship.getType().equals("03")){
+                } else if (scholarship.getType().equals("03")) {
                     response.setType("三等奖学金");
-                }else if(scholarship.getType().equals("04")){
+                } else if (scholarship.getType().equals("04")) {
                     response.setType("国家励志奖学金");
-                }else if (scholarship.getType().equals("05")){
+                } else if (scholarship.getType().equals("05")) {
                     response.setType("国家助学金");
                 }
                 response.setTime(scholarship.getTime());
-                response.setKey(studentApply.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
+                response.setKey(studentApply.getStudentId() + "::" + scholarship.getType() + "::" + scholarship.getTime());
                 resultList.add(response);
             }
-
+        }
             List<Scholarship> scholarshipList = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year,"初审通过");
             isPass = scholarshipList.size();
             result.setResponseDtoList(resultList);
             result.setIsPass(isPass+"");
             result.setSum(sum+"");
-        }
+
         return result;
     }
 
