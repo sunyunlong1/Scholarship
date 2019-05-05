@@ -89,7 +89,10 @@ public class StudentServiceImpl implements StudentService {
             studentApply.setTelephoneNumber(onlineDto.getTelephoneNumber());
             studentApply.setFGPA(onlineDto.getFgpa());
             studentApply.setSGPA(onlineDto.getSgpa());
-            studentDao.insertInf(studentApply);
+            StudentApply studentApply1 = studentDao.selectBySApplyid(onlineDto.getStudentId());
+            if(studentApply1 == null){
+                studentDao.insertInf(studentApply);
+            }
             if(onlineDto.getApplyType().equals("一等奖学金")){
                 onlineDto.setApplyType("01");
             }else if(onlineDto.getApplyType().equals("二等奖学金")){

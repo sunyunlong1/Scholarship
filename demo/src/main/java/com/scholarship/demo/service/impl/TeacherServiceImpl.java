@@ -35,16 +35,13 @@ public class TeacherServiceImpl implements TeacherService {
         if (teacher == null){
             return null;
         }
-        List<Scholarship> scholarships = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year);
+        List<Scholarship> scholarships = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year,"");
         List<TeacherResponseDto> resultList = new ArrayList<>();
         int isPass = 0;
         if(scholarships != null && scholarships.size()!=0){
             int sum = scholarships.size();
             for(Scholarship scholarship : scholarships){
                 TeacherResponseDto response = new TeacherResponseDto();
-                if(scholarship.getOneApproval().equals("初审通过")){
-                    isPass++;
-                }
                 StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
                 response.setName(studentApply.getName());
                 response.setStudentId(studentApply.getStudentId());
@@ -53,6 +50,9 @@ public class TeacherServiceImpl implements TeacherService {
                 response.setKey(studentApply.getStudentId()+"::"+scholarship.getType()+"::"+scholarship.getTime());
                 resultList.add(response);
             }
+
+            List<Scholarship> scholarshipList = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year,"初审通过");
+            isPass = scholarshipList.size();
             result.setResponseDtoList(resultList);
             result.setIsPass(isPass+"");
             result.setSum(sum+"");

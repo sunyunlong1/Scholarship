@@ -13,9 +13,9 @@ import java.util.List;
 @Mapper
 public interface TeacherDao {
 
-    @Select({"<script> select * from Scholarship where major = #{major} and type = #{type} and time = #{year} </script>"})
+    @Select({"<script> select * from Scholarship where major = #{major} and type = #{type} and time = #{year} and oneApproval = #{oneApproval} </script>"})
     @ResultType(Scholarship.class)
-    List<Scholarship> selectByMajor(String major,String type,String year);
+    List<Scholarship> selectByMajor(String major,String type,String year,String oneApproval);
 
 
     @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time = #{time} </script>"})
