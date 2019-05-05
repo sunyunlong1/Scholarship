@@ -24,13 +24,13 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public String sendCode(LoginDto loginDto) {
         String s = "";
-        if (loginDto.getRole().equals("学生")) {
+        if (loginDto.getRole().equals("student")) {
             Student student = studentDao.selectBySid(loginDto.getAccount());
              s = utilsService.sendMail(student.getEmail(), "验证码");
-        } else if (loginDto.getRole().equals("老师")) {
+        } else if (loginDto.getRole().equals("teacher")) {
             Teacher teacher = studentDao.selectByTid(loginDto.getAccount());
              s = utilsService.sendMail(teacher.getEmail(), "验证码");
-        } else if (loginDto.getRole().equals("评委")) {
+        } else if (loginDto.getRole().equals("judges")) {
             Judges judges = studentDao.selectByJid(loginDto.getAccount());
              s = utilsService.sendMail(judges.getEmail(), "验证码");
         } else {

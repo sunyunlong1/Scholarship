@@ -25,24 +25,30 @@ public class StudentServiceImpl implements StudentService {
             if(student!=null){
                 loginResponse.setUserName(student.getName());
                 loginResponse.setUserType("student");
+                loginResponse.setAccount(student.getStudentId());
             }
         } else if (loginDto.getRole().equals("教师")) {
             Teacher teacher = studentDao.selectByTid(loginDto.getAccount());
             if (teacher != null){
                 loginResponse.setUserName(teacher.getName());
                 loginResponse.setUserType("teacher");
+                loginResponse.setAccount(teacher.getTeacherId());
+
             }
         } else if (loginDto.getRole().equals("评委")) {
             Judges judges = studentDao.selectByJid(loginDto.getAccount());
             if(judges != null){
                 loginResponse.setUserName(judges.getName());
                 loginResponse.setUserType("judges");
+                loginResponse.setAccount(judges.getJudgesId());
+
             }
         } else {
             Admin admin = studentDao.selectByAid(loginDto.getAccount());
             if (admin != null){
                 loginResponse.setUserName(admin.getName());
                 loginResponse.setUserType("manager");
+                loginResponse.setAccount(admin.getAdminId());
             }
         }
         return loginResponse;
@@ -84,6 +90,17 @@ public class StudentServiceImpl implements StudentService {
             studentApply.setFGPA(onlineDto.getFgpa());
             studentApply.setSGPA(onlineDto.getSgpa());
             studentDao.insertInf(studentApply);
+            if(onlineDto.getApplyType().equals("一等奖学金")){
+                onlineDto.setApplyType("01");
+            }else if(onlineDto.getApplyType().equals("二等奖学金")){
+                onlineDto.setApplyType("02");
+            }else if(onlineDto.getApplyType().equals("三等奖学金")){
+                onlineDto.setApplyType("03");
+            }else if(onlineDto.getApplyType().equals("国家励志奖学金")){
+                onlineDto.setApplyType("04");
+            }else if (onlineDto.getApplyType().equals("国家助学金")){
+                onlineDto.setApplyType("05");
+            }
             Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce());
             if (integer > 0) {
                 return "提交" + "成功";
@@ -107,6 +124,17 @@ public class StudentServiceImpl implements StudentService {
             studentApply.setFGPA(onlineDto.getFgpa());
             studentApply.setSGPA(onlineDto.getSgpa());
             studentDao.updateInf(studentApply);
+            if(onlineDto.getApplyType().equals("一等奖学金")){
+                onlineDto.setApplyType("01");
+            }else if(onlineDto.getApplyType().equals("二等奖学金")){
+                onlineDto.setApplyType("02");
+            }else if(onlineDto.getApplyType().equals("三等奖学金")){
+                onlineDto.setApplyType("03");
+            }else if(onlineDto.getApplyType().equals("国家励志奖学金")){
+                onlineDto.setApplyType("04");
+            }else if (onlineDto.getApplyType().equals("国家助学金")){
+                onlineDto.setApplyType("05");
+            }
             studentDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce());
             return "提交" + "成功";
         }
