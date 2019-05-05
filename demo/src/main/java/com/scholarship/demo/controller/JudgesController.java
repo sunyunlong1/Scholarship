@@ -54,10 +54,9 @@ public class JudgesController {
     public String myApproval(){
         List<JMyApprovalRep> result = judgesService.myApproval();
         if (result == null){
-            return JSON.toJSONString(new Result(200,"-","当前没有已审批记录"));
+            return JSON.toJSONString(new Result(200,"-",result));
         }else{
             return JSON.toJSONString(new Result(200,"-",result));
-
         }
     }
 }

@@ -36,8 +36,8 @@ public class TeacherController {
 
     @RequestMapping("/approval")
     @ResponseBody
-    public String approval(@RequestBody ApprovalDto approvalDto){
-        String result = teacherService.approval(approvalDto);
+    public String approval(@RequestBody List<ApprovalDto> approvalDto){
+        String result = teacherService.approval(approvalDto.get(0));
         return JSON.toJSONString(new Result(200,"-",result));
     }
 

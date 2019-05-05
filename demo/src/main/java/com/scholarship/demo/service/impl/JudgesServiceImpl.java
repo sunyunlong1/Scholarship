@@ -26,7 +26,7 @@ public class JudgesServiceImpl implements JudgesService {
         SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
         String year = df2.format(new Date());
         List<JudgesResponseDto> resultList = new ArrayList<>();
-        List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过");
+        List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过","");
         int index = 1;
         if(scholarships != null && scholarships.size()!=0){
             for (Scholarship scholarship : scholarships){

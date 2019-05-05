@@ -14,9 +14,9 @@ import java.util.List;
 public interface JudgesDao {
 
 
-    @Select({"<script> select * from scholarship where type = #{type} and oneApproval = #{oneApproval} and time like CONCAT('%',#{year},'%')  </script>"})
+    @Select({"<script> select * from scholarship where type = #{type} and oneApproval = #{oneApproval} and time like CONCAT('%',#{year},'%') and twoApproval != #{twoApproval} </script>"})
     @ResultType(Scholarship.class)
-    List<Scholarship> selectByJId(String type, String year, String oneApproval);
+    List<Scholarship> selectByJId(String type, String year, String oneApproval,String twoApproval);
 
 
     @Select({"<script> select * from studentApply where studentId = #{studentId} </script>"})
