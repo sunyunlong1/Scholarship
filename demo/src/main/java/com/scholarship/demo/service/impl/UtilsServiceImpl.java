@@ -34,28 +34,28 @@ public class UtilsServiceImpl implements UtilsService {
     @Override
     public String changePassword(ChangeDto changeDto) {
 
-        if (changeDto.getRole().equals("学生")) {
+        if (changeDto.getRole().equals("student")) {
             Student student = studentDao.selectBySid(changeDto.getAccount());
             if (student.getPassword().equals(changeDto.getOldPassword())) {
                 studentDao.updateSPassword(changeDto.getAccount(), changeDto.getNewPassword());
             } else {
                 return "旧密码输入错误";
             }
-        } else if (changeDto.getRole().equals("老师")) {
+        } else if (changeDto.getRole().equals("teacher")) {
             Teacher teacher = studentDao.selectByTid(changeDto.getAccount());
             if (teacher.getPassword().equals(changeDto.getOldPassword())) {
                 studentDao.updateTPassword(changeDto.getAccount(), changeDto.getNewPassword());
             } else {
                 return "旧密码输入错误";
             }
-        } else if (changeDto.getRole().equals("评委")) {
+        } else if (changeDto.getRole().equals("judges")) {
             Judges judges = studentDao.selectByJid(changeDto.getAccount());
             if (judges.getPassword().equals(changeDto.getOldPassword())) {
                 studentDao.updateJPassword(changeDto.getAccount(), changeDto.getNewPassword());
             } else {
                 return "旧密码输入错误";
             }
-        } else if (changeDto.getRole().equals("管理员")) {
+        } else if (changeDto.getRole().equals("manager")) {
             Admin admin = studentDao.selectByAid(changeDto.getAccount());
             if (admin.getPassword().equals(changeDto.getOldPassword())) {
                 studentDao.updateAPassword(changeDto.getAccount(), changeDto.getNewPassword());
