@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class TeacherServiceImpl implements TeacherService {
                 StudentApply studentApply = teacherDao.selectById(scholarship.getStudentId());
                 response.setName(studentApply.getName());
                 response.setStudentId(studentApply.getStudentId());
+                response.setFGPA(studentApply.getFGPA());
+                response.setSGPA(studentApply.getSGPA());
                 if (scholarship.getType().equals("01")) {
                     response.setType("一等奖学金");
                 } else if (scholarship.getType().equals("02")) {
@@ -63,6 +66,7 @@ public class TeacherServiceImpl implements TeacherService {
                 resultList.add(response);
             }
         }
+            Collections.sort(resultList);
             List<Scholarship> scholarshipList = teacherDao.selectByMajor(teacher.getMajor(),teacherDto.getType(),year,"初审通过");
             isPass = scholarshipList.size();
             result.setResponseDtoList(resultList);

@@ -123,4 +123,3 @@ public class UtilsServiceImpl implements UtilsService {
         return strCode;
     }
 }
-

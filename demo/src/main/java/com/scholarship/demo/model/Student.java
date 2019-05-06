@@ -3,7 +3,7 @@ package com.scholarship.demo.model;
 import lombok.Data;
 
 @Data
-public class Student {
+public class Student{
 
     private int id;
     private String name;
@@ -21,5 +21,6 @@ public class Student {
     private String dateOfBirth;
     private String fGPA;
     private String sGPA;
+
 
 }
