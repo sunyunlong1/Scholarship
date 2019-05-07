@@ -11,5 +11,4 @@ public class Judges {
     private String password;
     private String email;
     private String number;
-    private String college;
 }

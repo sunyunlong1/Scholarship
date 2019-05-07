@@ -4,6 +4,7 @@ import com.scholarship.demo.api.AdminDto;
 import com.scholarship.demo.api.AdminSubmissionDto;
 import com.scholarship.demo.api.AdminTable;
 import com.scholarship.demo.dao.AdminDao;
+import com.scholarship.demo.model.Grade;
 import com.scholarship.demo.model.Judges;
 import com.scholarship.demo.model.Scholarship;
 import com.scholarship.demo.model.Student;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -32,8 +34,8 @@ public class AdminServiceImpl implements AdminService {
         String year = df2.format(new Date());
         // AdminDtoResponse result = new AdminDtoResponse();
         List<AdminTable> adminTables = new ArrayList<>();
-        Integer integer = adminDao.selectSum(adminDto.getType(), year, "复审通过");
-        Integer sum = adminDao.selectALL(adminDto.getType(), year);
+        Integer integer = adminDao.selectSum(adminDto.getType(), year, "","初审通过");
+        Integer sum = adminDao.selectALL(adminDto.getType(), year,"初审通过");
 
         AdminTable adminTable = new AdminTable();
         adminTable.setState("已审批");
@@ -52,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
             adminTable.setType("国家助学金");
         }
         adminTable.setKey(adminDto.getType() + "::" + year);
-        Integer sumno = adminDao.selectSum(adminDto.getType(), year, "");
+        Integer sumno = adminDao.selectNotSum(adminDto.getType(), year, "","初审通过");
         AdminTable table = new AdminTable();
         table.setState("未审批");
         table.setNum(sumno == 0 ? "0" : sumno.toString());
@@ -81,10 +83,22 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String submission(AdminSubmissionDto adminSubmissionDto) {
         String[] split = adminSubmissionDto.getKey().split("::");
-        Integer sum = adminDao.selectSum(split[0], split[1], "");
+        Integer sum = adminDao.selectSum(split[0], split[1], "","初审通过");
         if (sum > 0) {
             return "还有未评价的记录，请提醒评委老师尽快评价";
         } else {
+            List<Scholarship> scholarshipList = adminDao.selectByKey(split[0], split[1], "初审通过", "");
+            Collections.sort(scholarshipList);
+            //int length = scholarshipList.size()>=5 ? 5 : scholarshipList.size();
+            if (scholarshipList.size()<=5){
+                for (int i = 0; i < scholarshipList.size(); i++) {
+                    adminDao.UpdateSTwoApproval(scholarshipList.get(i).getStudentId(),scholarshipList.get(i).getType(),scholarshipList.get(i).getTime(),"复审通过");
+                }
+            }else{
+                for (int i = 5; i < scholarshipList.size() ; i++) {
+                    adminDao.UpdateSTwoApproval(scholarshipList.get(i).getStudentId(),scholarshipList.get(i).getType(),scholarshipList.get(i).getTime(),"复审未通过");
+                }
+            }
             List<Scholarship> scholarships = adminDao.selectByTAndY(split[0], split[1]);
             for (Scholarship scholarship : scholarships) {
                 Student student = adminDao.selectByAccount(scholarship.getStudentId());
@@ -97,15 +111,29 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String remind(AdminSubmissionDto adminSubmissionDto) {
         String[] split = adminSubmissionDto.getKey().split("::");
-        List<Judges> judgesList = adminDao.selectByJAccount();
-        if(judgesList != null && judgesList.size() != 0){
-            for (Judges judges : judgesList) {
-                String s = utilsService.sendMail(judges.getEmail(), "提醒");
-            }
-            return "发送成功";
-        }else{
+        String type = split[0];
+        String year = split[1];
+        List<Scholarship> scholarshipList = adminDao.selectByKey(split[0], split[1], "初审通过", "");
+        if (scholarshipList ==  null || scholarshipList.size() == 0){
             return "发送失败";
         }
-
+        for (Scholarship scholarship : scholarshipList){
+            Grade grade = adminDao.selectByGradeKey(scholarship.getStudentId(), scholarship.getType(), scholarship.getTime());
+            String number = "";
+            if (grade.getOneGrade().equals("")){
+                number = "one";
+            }else if(grade.getTwoGrade().equals("")){
+                number = "two";
+            }else if(grade.getThreeGrade().equals("")){
+                number = "three";
+            }else if(grade.getFourGrade().equals("")){
+                number = "four";
+            }else if(grade.getFiveGrade().equals("")){
+                number = "five";
+            }
+            Judges judges = adminDao.selectByNumber(number);
+            String s = utilsService.sendMail(judges.getEmail(), "提醒");
+        }
+        return "发送成功";
     }
 }

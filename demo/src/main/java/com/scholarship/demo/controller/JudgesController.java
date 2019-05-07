@@ -51,8 +51,8 @@ public class JudgesController {
 
     @RequestMapping("/myApproval")
     @ResponseBody
-    public String myApproval(){
-        List<JMyApprovalRep> result = judgesService.myApproval();
+    public String myApproval(@RequestBody JudgesApprovalDto judgesApprovalDto){
+        List<JMyApprovalRep> result = judgesService.myApproval(judgesApprovalDto);
         if (result == null){
             return JSON.toJSONString(new Result(200,"-",result));
         }else{

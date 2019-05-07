@@ -43,5 +43,5 @@ public interface JudgesService {
      * @param
      * @return
      */
-    List<JMyApprovalRep> myApproval();
+    List<JMyApprovalRep> myApproval(JudgesApprovalDto judgesApprovalDto);
 }

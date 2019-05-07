@@ -21,9 +21,9 @@ public interface JudgesDao {
     @ResultType(StudentApply.class)
     StudentApply selectById(String studentId);
 
-    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time =  #{time} </script>"})
+    @Select({"<script> select * from scholarship where studentId = #{studentId} and type = #{type} and time =  #{time} and oneApproval = #{oneApproval} </script>"})
     @ResultType(Scholarship.class)
-    Scholarship selectBySIdAndType(String studentId,String type,String time);
+    Scholarship selectBySIdAndType(String studentId,String type,String time,String oneApproval);
 
     @Update({"<script> update scholarship <set> twoApproval = #{twoApproval} </set> where studentId = #{studentId} and type = #{type} and time = #{time} and oneApproval = #{oneApproval} </script>"})
     void updateTwoApproval(String studentId,String type,String time,String twoApproval,String oneApproval);
@@ -37,24 +37,64 @@ public interface JudgesDao {
     @ResultType(Judges.class)
     Judges selectByJudgesId(String judgesId);
 
-    @Select({"<script> select * from grade where oneGrade = #{oneGrade} </script>"})
+    @Select({"<script> select * from grade where oneGrade = #{oneGrade}  </script>"})
     @ResultType(Grade.class)
     List<Grade> selectByOneGrade(String oneGrade);
 
-    @Select({"<script> select * from grade where twoGrade = #{twoGrade} </script>"})
+    @Select({"<script> select * from grade where twoGrade = #{twoGrade}  </script>"})
     @ResultType(Grade.class)
     List<Grade> selectByTwoGrade(String twoGrade);
 
-    @Select({"<script> select * from grade where threeGrade = #{threeGrade} </script>"})
+    @Select({"<script> select * from grade where threeGrade = #{threeGrade}  </script>"})
     @ResultType(Grade.class)
     List<Grade> selectByThreeGrade(String threeGrade);
 
-    @Select({"<script> select * from grade where fourGrade = #{fourGrade} </script>"})
+    @Select({"<script> select * from grade where fourGrade = #{fourGrade}  </script>"})
     @ResultType(Grade.class)
     List<Grade> selectByFourGrade(String fourGrade);
 
-    @Select({"<script> select * from grade where fiveGrade = #{fiveGrade} </script>"})
+    @Select({"<script> select * from grade where fiveGrade = #{fiveGrade}  </script>"})
     @ResultType(Grade.class)
     List<Grade> selectByFiveGrade(String fiveGrade);
+
+    @Update({"<script> update grade <set> oneGrade = #{oneGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
+    void updateOneGrade(String studentId,String type,String year,String oneGrade);
+
+    @Update({"<script> update grade <set> twoGrade = #{twoGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
+    void updateTwoGrade(String studentId,String type,String year,String twoGrade);
+
+    @Update({"<script> update grade <set> threeGrade = #{threeGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
+    void updateThreeGrade(String studentId,String type,String year,String threeGrade);
+
+    @Update({"<script> update grade <set> fourGrade = #{fourGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
+    void updateFourGrade(String studentId,String type,String year,String fourGrade);
+
+    @Update({"<script> update grade <set> fiveGrade = #{fiveGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
+    void updateFiveGrade(String studentId,String type,String year,String fiveGrade);
+
+    @Select({"<script> select * from grade where student = #{student} and applyType = #{applyType} and year = #{year} </script>"})
+    @ResultType(Grade.class)
+    Grade selectByKey(String studentId,String applyType,String year);
+
+    @Select({"<script> select * from grade where oneGrade != #{oneGrade}  </script>"})
+    @ResultType(Grade.class)
+    List<Grade> selectOneGrade(String oneGrade);
+
+    @Select({"<script> select * from grade where twoGrade != #{twoGrade}  </script>"})
+    @ResultType(Grade.class)
+    List<Grade> selectTwoGrade(String twoGrade);
+
+    @Select({"<script> select * from grade where threeGrade != #{threeGrade}  </script>"})
+    @ResultType(Grade.class)
+    List<Grade> selectThreeGrade(String threeGrade);
+
+    @Select({"<script> select * from grade where fourGrade != #{fourGrade} </script>"})
+    @ResultType(Grade.class)
+    List<Grade> selectFourGrade(String fourGrade);
+
+    @Select({"<script> select * from grade where fiveGrade != #{fiveGrade}  </script>"})
+    @ResultType(Grade.class)
+    List<Grade> selectFiveGrade(String fiveGrade);
+
 
 }
