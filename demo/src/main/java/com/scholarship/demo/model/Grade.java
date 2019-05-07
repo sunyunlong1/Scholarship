@@ -6,9 +6,12 @@ import lombok.Data;
 public class Grade {
 
     private int id;
-    private String scholarshipId;
     private String studentId;
-    private String grade;
-    private String scholarshipType;
-    private String judgesId;
+    private String oneGrade;
+    private String twoGrade;
+    private String threeGrade;
+    private String fourGrade;
+    private String fiveGrade;
+    private String year;
+    private String applyType;
 }

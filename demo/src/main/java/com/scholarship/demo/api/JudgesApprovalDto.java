@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class JudgesApprovalDto {
     private String key;
+    private String account;
 }

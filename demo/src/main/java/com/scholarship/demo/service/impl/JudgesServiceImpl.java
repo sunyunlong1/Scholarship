@@ -2,9 +2,7 @@ package com.scholarship.demo.service.impl;
 
 import com.scholarship.demo.api.*;
 import com.scholarship.demo.dao.JudgesDao;
-import com.scholarship.demo.model.Scholarship;
-import com.scholarship.demo.model.Student;
-import com.scholarship.demo.model.StudentApply;
+import com.scholarship.demo.model.*;
 import com.scholarship.demo.service.JudgesService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +24,29 @@ public class JudgesServiceImpl implements JudgesService {
         SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
         String year = df2.format(new Date());
         List<JudgesResponseDto> resultList = new ArrayList<>();
-        List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过","");
+        List<Grade> grades = null;
+        Judges judges = judgesDao.selectByJudgesId(judgesDto.getAccount());
+        if (judges.getNumber().equals("one")){
+            grades = judgesDao.selectByOneGrade("");
+        }else if(judges.getNumber().equals("two")){
+            grades = judgesDao.selectByTwoGrade("");
+        }else if(judges.getNumber().equals("three")){
+            grades = judgesDao.selectByThreeGrade("");
+        }else if(judges.getNumber().equals("four")){
+            grades = judgesDao.selectByFourGrade("");
+        }else if(judges.getNumber().equals("five")){
+            grades = judgesDao.selectByFiveGrade("");
+        }
+
+
+        //List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过","");
         int index = 1;
-        if(scholarships != null && scholarships.size()!=0){
-            for (Scholarship scholarship : scholarships){
+        if(grades != null && grades.size()!=0){
+
+            for (Grade grade : grades){
+
+                Scholarship scholarship = judgesDao.selectBySIdAndType(grade.getStudentId(), grade.getApplyType(), grade.getYear());
+
                 JudgesResponseDto judgesResponse = new JudgesResponseDto();
                 StudentApply student = judgesDao.selectById(scholarship.getStudentId());
                 judgesResponse.setName("学生"+index);
@@ -82,6 +99,10 @@ public class JudgesServiceImpl implements JudgesService {
 
     @Override
     public String notApproval(JudgesApprovalDto judgesApprovalDto) {
+
+        Judges judges = judgesDao.selectByJudgesId(judgesApprovalDto.getAccount());
+
+
         String[] split = judgesApprovalDto.getKey().split("::");
         judgesDao.updateTwoApproval(split[0],split[1],split[2],"复审未通过","初审通过");
         return "审批成功";

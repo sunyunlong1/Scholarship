@@ -27,9 +27,13 @@ public interface StudentDao {
     @ResultType(java.lang.Integer.class)
     Integer insertScholarship(String type,String studentId,String isSave,String major,String college,String time,String introduce);
 
+    @Insert({"<script> insert into grade (applyType,studentId,year) values (#{type},#{studentId},#{year}) </script>"})
+    @ResultType(java.lang.Integer.class)
+    Integer insertGrade(String type,String studentId,String year);
 
     @Update({"<script> update scholarship <set> isSave = #{isSave},major = #{major},college = #{college},time = #{time},introduce = #{introduce} </set> where type = #{type} and studentId = #{studentId} </script>"})
     void updateScholarship(String type,String studentId,String isSave,String major,String college,String time,String introduce);
+
 
     @Select({"<script> select * from student where studentId = #{studentId} </script>"})
     @ResultType(Student.class)

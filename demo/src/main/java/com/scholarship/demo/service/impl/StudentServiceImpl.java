@@ -106,6 +106,9 @@ public class StudentServiceImpl implements StudentService {
             }else if (onlineDto.getApplyType().equals("国家助学金")){
                 onlineDto.setApplyType("05");
             }
+
+            Integer integer1 = studentDao.insertGrade(onlineDto.getApplyType(), onlineDto.getStudentId(), year);
+
             Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce());
             if (integer > 0) {
                 return "提交" + "成功";
@@ -144,6 +147,7 @@ public class StudentServiceImpl implements StudentService {
             return "提交" + "成功";
         }
     }
+
 
     @Override
     public List<MyApply> myApply(String studentId) {
