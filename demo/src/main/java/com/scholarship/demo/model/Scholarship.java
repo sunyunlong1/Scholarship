@@ -18,6 +18,8 @@ public class Scholarship implements Comparable<Scholarship>{
     private String isSave;
     private String isLand;
     private String time;
+    private String path;
+    private String fileName;
 
     @Override
     public int compareTo(Scholarship o) {

@@ -21,4 +21,7 @@ public class OnlineDto {
     private String fgpa;
     private String sgpa;
     private String introduce;
+    private String path;
+    private String fileName;
+
 }

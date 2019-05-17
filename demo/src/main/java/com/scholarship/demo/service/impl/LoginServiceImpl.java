@@ -39,4 +39,14 @@ public class LoginServiceImpl implements LoginService {
         }
         return s;
     }
+
+    @Override
+    public String upload() {
+        return null;
+    }
+
+    @Override
+    public String download(String path) {
+        return null;
+    }
 }

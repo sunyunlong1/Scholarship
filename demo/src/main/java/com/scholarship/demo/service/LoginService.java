@@ -13,4 +13,17 @@ public interface LoginService {
      * @return
      */
     String sendCode(LoginDto loginDto);
+
+    /**
+     * 上传
+     * @return
+     */
+    String upload();
+
+    /**
+     * 下载
+     * @param path
+     * @return
+     */
+    String download(String path);
 }

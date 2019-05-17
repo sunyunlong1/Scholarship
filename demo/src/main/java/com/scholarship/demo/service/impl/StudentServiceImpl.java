@@ -109,7 +109,7 @@ public class StudentServiceImpl implements StudentService {
 
             Integer integer1 = studentDao.insertGrade(onlineDto.getApplyType(), onlineDto.getStudentId(), year);
 
-            Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce());
+            Integer integer = studentDao.insertScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce(),onlineDto.getPath(),onlineDto.getFileName());
             if (integer > 0) {
                 return "提交" + "成功";
             } else {
@@ -143,7 +143,7 @@ public class StudentServiceImpl implements StudentService {
             }else if (onlineDto.getApplyType().equals("国家助学金")){
                 onlineDto.setApplyType("05");
             }
-            studentDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce());
+            studentDao.updateScholarship(onlineDto.getApplyType(), onlineDto.getStudentId(), "已提交", onlineDto.getMajor(), onlineDto.getCollege(), time, onlineDto.getIntroduce(),onlineDto.getPath(),onlineDto.getFileName());
             return "提交" + "成功";
         }
     }

@@ -2,6 +2,7 @@ package com.scholarship.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.scholarship.demo.api.ChangeDto;
+import com.scholarship.demo.api.Download;
 import com.scholarship.demo.api.LoginDto;
 import com.scholarship.demo.api.LoginResponse;
 import com.scholarship.demo.model.Result;
@@ -166,4 +167,5 @@ public class LoginController {
         }
         return md5code;
     }
+
 }
