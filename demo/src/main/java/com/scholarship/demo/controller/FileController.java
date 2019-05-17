@@ -79,11 +79,11 @@ public class FileController {
     //实现Spring Boot 的文件下载功能，映射网址为/download
     @GetMapping("/download")
     @ResponseBody
-    public String downloadFile(@RequestBody TeacherDetailsDto teacherDetailsDto, HttpServletRequest request,
+    public String downloadFile(@RequestParam String key, HttpServletRequest request,
                                HttpServletResponse response) throws UnsupportedEncodingException {
 //        String path = download.getPath();
 //        String[] split = path.split("/");
-        String[] split = teacherDetailsDto.getKey().split("::");
+        String[] split = key.split("::");
         Scholarship scholarship = teacherDao.selectBySIdAndType(split[0], split[1], split[2]);
 
         // 获取指定目录下的第一个文件
