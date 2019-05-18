@@ -72,7 +72,7 @@ public interface JudgesDao {
     @Update({"<script> update grade <set> fiveGrade = #{fiveGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
     void updateFiveGrade(String studentId,String type,String year,String fiveGrade);
 
-    @Select({"<script> select * from grade where student = #{student} and applyType = #{applyType} and year = #{year} </script>"})
+    @Select({"<script> select * from grade where studentId = #{studentId} and applyType = #{applyType} and year = #{year} </script>"})
     @ResultType(Grade.class)
     Grade selectByKey(String studentId,String applyType,String year);
 

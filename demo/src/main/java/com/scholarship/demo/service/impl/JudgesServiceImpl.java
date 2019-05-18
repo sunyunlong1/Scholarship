@@ -160,22 +160,41 @@ public class JudgesServiceImpl implements JudgesService {
         }
         int index = 1;
         for (Grade grade : gradeList) {
+            JMyApprovalRep jMyApprovalRep = new JMyApprovalRep();
+
+            if (judges.getNumber().equals("one")) {
+            jMyApprovalRep.setTwoApproval(grade.getOneGrade());
+            } else if (judges.getNumber().equals("two")) {
+                jMyApprovalRep.setTwoApproval(grade.getTwoGrade());
+
+            } else if (judges.getNumber().equals("three")) {
+                jMyApprovalRep.setTwoApproval(grade.getThreeGrade());
+            } else if (judges.getNumber().equals("four")) {
+                jMyApprovalRep.setTwoApproval(grade.getFourGrade());
+            } else if (judges.getNumber().equals("five")) {
+                jMyApprovalRep.setTwoApproval(grade.getFiveGrade());
+            }
+
 
             Scholarship scholarship = judgesDao.selectBySIdAndType(grade.getStudentId(), grade.getApplyType(), grade.getYear(),"初审通过");
 
-            JMyApprovalRep jMyApprovalRep = new JMyApprovalRep();
             jMyApprovalRep.setName("学生" + index);
             jMyApprovalRep.setTime(scholarship.getTime());
-            jMyApprovalRep.setTwoApproval(scholarship.getTwoApproval());
+//            jMyApprovalRep.setTwoApproval(scholarship.getTwoApproval());
             if (scholarship.getType().equals("01")) {
+
                 jMyApprovalRep.setType("一等奖学金");
             } else if (scholarship.getType().equals("02")) {
+
                 jMyApprovalRep.setType("二等奖学金");
             } else if (scholarship.getType().equals("03")) {
+
                 jMyApprovalRep.setType("三等奖学金");
             } else if (scholarship.getType().equals("04")) {
+
                 jMyApprovalRep.setType("国家励志奖学金");
             } else if (scholarship.getType().equals("05")) {
+
                 jMyApprovalRep.setType("国家助学金");
             }
             resultList.add(jMyApprovalRep);

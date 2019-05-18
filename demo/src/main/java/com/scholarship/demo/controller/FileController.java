@@ -84,7 +84,10 @@ public class FileController {
 //        String path = download.getPath();
 //        String[] split = path.split("/");
         String[] split = key.split("::");
-        Scholarship scholarship = teacherDao.selectBySIdAndType(split[0], split[1], split[2]);
+        SimpleDateFormat df2 = new SimpleDateFormat(("yyyy"));
+        String year = df2.format(new Date());
+
+        Scholarship scholarship = teacherDao.selectBySIdAndType(split[0], split[1], year);
 
         // 获取指定目录下的第一个文件
         File scFileDir = new File(scholarship.getPath());
