@@ -75,6 +75,7 @@ public class UtilsServiceImpl implements UtilsService {
         p.setProperty("mail.smtp.auth", "true");
         p.setProperty("mail.smtp.socketFactory.class", "SSL_FACTORY");
         String newRandomCode = "";
+        try {
         Session session = Session.getInstance(p, new Authenticator() {
             // 设置认证账户信息
             @Override
@@ -85,7 +86,7 @@ public class UtilsServiceImpl implements UtilsService {
         session.setDebug(true);
         MimeMessage message = new MimeMessage(session);
         // 发件人
-        try {
+
             message.setFrom(new InternetAddress(MY_EMAIL_ACCOUNT));
             // 收件人和抄送人
             message.setRecipients(Message.RecipientType.TO, email);
@@ -106,8 +107,10 @@ public class UtilsServiceImpl implements UtilsService {
             message.setSentDate(new Date());
             message.saveChanges();
             Transport.send(message);
-        } catch (MessagingException e) {
+        }catch (NoSuchProviderException e) {
             e.printStackTrace();
+        } catch (MessagingException e) {
+            return "未连接到互联网，请稍后重试!";
         }
         return newRandomCode;
     }

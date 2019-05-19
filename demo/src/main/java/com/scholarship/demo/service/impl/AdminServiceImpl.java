@@ -13,6 +13,8 @@ import com.scholarship.demo.service.UtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,9 +86,6 @@ public class AdminServiceImpl implements AdminService {
     public String submission(AdminSubmissionDto adminSubmissionDto) {
         String[] split = adminSubmissionDto.getKey().split("::");
         Integer sum = adminDao.selectSum(split[0], split[1], "","初审通过");
-        if (sum > 0) {
-            return "还有未评价的记录，请提醒评委老师尽快评价";
-        } else {
             List<Scholarship> scholarshipList = adminDao.selectByKey(split[0], split[1], "初审通过", "");
             Collections.sort(scholarshipList);
             //int length = scholarshipList.size()>=5 ? 5 : scholarshipList.size();
@@ -99,14 +98,17 @@ public class AdminServiceImpl implements AdminService {
                     adminDao.UpdateSTwoApproval(scholarshipList.get(i).getStudentId(),scholarshipList.get(i).getType(),scholarshipList.get(i).getTime(),"复审未通过");
                 }
             }
-            List<Scholarship> scholarships = adminDao.selectByTAndY(split[0], split[1]);
+            List<Scholarship> scholarships = adminDao.selectByTAndY(split[0], split[1],"");
             for (Scholarship scholarship : scholarships) {
                 Student student = adminDao.selectByAccount(scholarship.getStudentId());
                 String s = utilsService.sendMail(student.getEmail(), "发布");
+                if (s.equals("未连接到互联网，请稍后重试!")){
+                    return s;
+                }
             }
             return "发送成功";
         }
-    }
+
 
     @Override
     public String remind(AdminSubmissionDto adminSubmissionDto) {
@@ -132,8 +134,11 @@ public class AdminServiceImpl implements AdminService {
                 number = "five";
             }
             Judges judges = adminDao.selectByNumber(number);
-            String s = utilsService.sendMail(judges.getEmail(), "提醒");
+            if (judges!=null){
+                String s = utilsService.sendMail(judges.getEmail(), "提醒");
+                return "发送成功";
+            }
         }
-        return "发送成功";
+        return "发送失败";
     }
 }

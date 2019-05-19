@@ -26,9 +26,9 @@ public interface AdminDao {
     @ResultType(java.lang.Integer.class)
     Integer selectALL(String type,String year,String oneApproval);
 
-    @Select({"<script> select * from scholarship where type = #{type} and time like CONCAT('%',#{year},'%') </script>"})
+    @Select({"<script> select * from scholarship where type = #{type} and time like CONCAT('%',#{year},'%') and twoApproval != #{twoApproval}  </script>"})
     @ResultType(Scholarship.class)
-    List<Scholarship> selectByTAndY(String type,String year);
+    List<Scholarship> selectByTAndY(String type,String year,String twoApproval);
 
     @Select({"<script> select * from student where studentId = #{studentId}</script>"})
     @ResultType(Student.class)
@@ -38,7 +38,7 @@ public interface AdminDao {
     @ResultType(Judges.class)
     List<Judges> selectByJAccount();
 
-    @Select({"<script> select * from scholarship where type = #{type} and year = #{year} and oneApproval = #{oneApproval} and twoApproval != #{twoApproval} </script>"})
+    @Select({"<script> select * from scholarship where type = #{type} and time = #{year} and oneApproval = #{oneApproval} and twoApproval != #{twoApproval} </script>"})
     @ResultType(Scholarship.class)
     List<Scholarship> selectByKey(String type,String year,String oneApproval,String twoApproval);
 

@@ -33,13 +33,21 @@ public class AdminController {
     @ResponseBody
     public String submission(@RequestBody AdminSubmissionDto adminSubmissionDto){
         String result = adminService.submission(adminSubmissionDto);
-        return JSON.toJSONString(new Result(200,"-",result));
+        if (result.equals("发送成功")){
+            return JSON.toJSONString(new Result(200,"-",result));
+        }else{
+            return JSON.toJSONString(new Result(405,"-",result));
+        }
     }
 
     @RequestMapping("/remind")
     @ResponseBody
     public String remind(@RequestBody AdminSubmissionDto adminSubmissionDto){
         String result = adminService.remind(adminSubmissionDto);
-        return JSON.toJSONString(new Result(200,"-",result));
+        if (result.equals("发送成功")){
+            return JSON.toJSONString(new Result(200,"-",result));
+        }else{
+            return JSON.toJSONString(new Result(405,"-","当前评委已全部审批，提醒失败"));
+        }
     }
 }
