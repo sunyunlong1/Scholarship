@@ -89,8 +89,8 @@ public class StudentServiceImpl implements StudentService {
             studentApply.setCollege(onlineDto.getCollege());
             studentApply.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
             studentApply.setTelephoneNumber(onlineDto.getTelephoneNumber());
-            studentApply.setFGPA(onlineDto.getFgpa());
-            studentApply.setSGPA(onlineDto.getSgpa());
+            studentApply.setFGPA(onlineDto.getFGPA());
+            studentApply.setSGPA(onlineDto.getSGPA());
             StudentApply studentApply1 = studentDao.selectBySApplyid(onlineDto.getStudentId());
             if(studentApply1 == null){
                 studentDao.insertInf(studentApply);
@@ -129,8 +129,8 @@ public class StudentServiceImpl implements StudentService {
             studentApply.setCollege(onlineDto.getCollege());
             studentApply.setPoliticalOutlook(onlineDto.getPoliticalOutlook());
             studentApply.setTelephoneNumber(onlineDto.getTelephoneNumber());
-            studentApply.setFGPA(onlineDto.getFgpa());
-            studentApply.setSGPA(onlineDto.getSgpa());
+            studentApply.setFGPA(onlineDto.getFGPA());
+            studentApply.setSGPA(onlineDto.getSGPA());
             studentDao.updateInf(studentApply);
             if(onlineDto.getApplyType().equals("一等奖学金")){
                 onlineDto.setApplyType("01");
@@ -213,8 +213,8 @@ public class StudentServiceImpl implements StudentService {
                 onlineDto.setSex(student.getSex());
                 onlineDto.setStudentId(student.getStudentId());
                 onlineDto.setTelephoneNumber(student.getTelephoneNumber());
-                onlineDto.setFgpa(student.getFGPA());
-                onlineDto.setSgpa(student.getSGPA());
+                onlineDto.setFGPA(student.getFGPA());
+                onlineDto.setSGPA(student.getSGPA());
             }
             onlineDto.setIntroduce(scholarship.getIntroduce());
         }

@@ -31,15 +31,15 @@ public class JudgesServiceImpl implements JudgesService {
         List<Grade> grades = null;
         Judges judges = judgesDao.selectByJudgesId(judgesDto.getAccount());
         if (judges.getNumber().equals("one")) {
-            grades = judgesDao.selectByOneGrade("");
+            grades = judgesDao.selectByOneGrade("",judgesDto.getType());
         } else if (judges.getNumber().equals("two")) {
-            grades = judgesDao.selectByTwoGrade("");
+            grades = judgesDao.selectByTwoGrade("",judgesDto.getType());
         } else if (judges.getNumber().equals("three")) {
-            grades = judgesDao.selectByThreeGrade("");
+            grades = judgesDao.selectByThreeGrade("",judgesDto.getType());
         } else if (judges.getNumber().equals("four")) {
-            grades = judgesDao.selectByFourGrade("");
+            grades = judgesDao.selectByFourGrade("",judgesDto.getType());
         } else if (judges.getNumber().equals("five")) {
-            grades = judgesDao.selectByFiveGrade("");
+            grades = judgesDao.selectByFiveGrade("",judgesDto.getType());
         }
         //List<Scholarship> scholarships = judgesDao.selectByJId(judgesDto.getType(), year, "初审通过","");
         int index = 1;
@@ -47,8 +47,10 @@ public class JudgesServiceImpl implements JudgesService {
 
             for (Grade grade : grades) {
 
-                Scholarship scholarship = judgesDao.selectBySIdAndType(grade.getStudentId(), grade.getApplyType(), grade.getYear(),"初审通过");
-
+                Scholarship scholarship = judgesDao.selectBySIdAndType(grade.getStudentId(), judgesDto.getType(), grade.getYear(),"初审通过");
+                if (scholarship == null){
+                    continue;
+                }
                 JudgesResponseDto judgesResponse = new JudgesResponseDto();
                 StudentApply student = null;
                 if (scholarship!=null) {

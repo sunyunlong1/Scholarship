@@ -37,25 +37,25 @@ public interface JudgesDao {
     @ResultType(Judges.class)
     Judges selectByJudgesId(String judgesId);
 
-    @Select({"<script> select * from grade where oneGrade = #{oneGrade}  </script>"})
+    @Select({"<script> select * from grade where oneGrade = #{oneGrade} and applyType = #{applyType} </script>"})
     @ResultType(Grade.class)
-    List<Grade> selectByOneGrade(String oneGrade);
+    List<Grade> selectByOneGrade(String oneGrade,String applyType);
 
-    @Select({"<script> select * from grade where twoGrade = #{twoGrade}  </script>"})
+    @Select({"<script> select * from grade where twoGrade = #{twoGrade} and applyType = #{applyType} </script>"})
     @ResultType(Grade.class)
-    List<Grade> selectByTwoGrade(String twoGrade);
+    List<Grade> selectByTwoGrade(String twoGrade,String applyType);
 
-    @Select({"<script> select * from grade where threeGrade = #{threeGrade}  </script>"})
+    @Select({"<script> select * from grade where threeGrade = #{threeGrade} and applyType = #{applyType} </script>"})
     @ResultType(Grade.class)
-    List<Grade> selectByThreeGrade(String threeGrade);
+    List<Grade> selectByThreeGrade(String threeGrade,String applyType);
 
-    @Select({"<script> select * from grade where fourGrade = #{fourGrade}  </script>"})
+    @Select({"<script> select * from grade where fourGrade = #{fourGrade} and applyType = #{applyType} </script>"})
     @ResultType(Grade.class)
-    List<Grade> selectByFourGrade(String fourGrade);
+    List<Grade> selectByFourGrade(String fourGrade,String applyType);
 
-    @Select({"<script> select * from grade where fiveGrade = #{fiveGrade}  </script>"})
+    @Select({"<script> select * from grade where fiveGrade = #{fiveGrade} and applyType = #{applyType} </script>"})
     @ResultType(Grade.class)
-    List<Grade> selectByFiveGrade(String fiveGrade);
+    List<Grade> selectByFiveGrade(String fiveGrade,String applyType);
 
     @Update({"<script> update grade <set> oneGrade = #{oneGrade} </set> where studentId = #{studentId} and applyType = #{type} and year = #{year} </script>"})
     void updateOneGrade(String studentId,String type,String year,String oneGrade);

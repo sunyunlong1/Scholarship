@@ -18,8 +18,8 @@ public class OnlineDto {
     private String idNumber;
     private String telephoneNumber;
     private String email;
-    private String fgpa;
-    private String sgpa;
+    private String fGPA;
+    private String sGPA;
     private String introduce;
     private String path;
     private String fileName;
