@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 07/05/2019 16:38:47
+ Date: 20/05/2019 23:38:17
 */
 
 SET NAMES utf8mb4;
@@ -51,13 +51,31 @@ CREATE TABLE `grade` (
   `fiveGrade` varchar(255) DEFAULT '',
   `year` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of grade
 -- ----------------------------
 BEGIN;
-INSERT INTO `grade` VALUES (00000000002, 'A19150247', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000002, 'A19150247', '60', '01', '70', '55', '80', '80', '2019');
+INSERT INTO `grade` VALUES (00000000003, 'A19150292', '90', '01', '99', '98', '97', '96', '2019');
+INSERT INTO `grade` VALUES (00000000004, 'A19150251', '89', '01', '78', '89', '90', '89', '2019');
+INSERT INTO `grade` VALUES (00000000005, 'A19150414', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000006, 'A19150290', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000007, 'A19150289', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000008, 'A19150237', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000009, 'A19150238', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000010, 'A19150239', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000011, 'A19150240', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000012, 'A19150241', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000013, 'A19150242', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000014, 'A19150243', '', '02', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000015, 'A19150243', '', '03', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000016, 'A19150244', '', '04', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000017, 'A19150245', '', '05', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000018, 'A19150246', '', '03', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000019, 'A19150246', '', '01', '', '', '', '', '2019');
+INSERT INTO `grade` VALUES (00000000020, 'A19150247', '', '01', '', '', '', '', '2019');
 COMMIT;
 
 -- ----------------------------
@@ -71,7 +89,6 @@ CREATE TABLE `judges` (
   `password` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `number` varchar(255) DEFAULT '',
-  `college` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
@@ -79,11 +96,11 @@ CREATE TABLE `judges` (
 -- Records of judges
 -- ----------------------------
 BEGIN;
-INSERT INTO `judges` VALUES (00000000001, 'A19151111', '一号评委', '123', '312241387@qq.com', 'one', '电气与信息学院');
-INSERT INTO `judges` VALUES (00000000002, 'A19152222', '二号评委', '123', '312241387@qq.com', 'two', '电气与信息学院');
-INSERT INTO `judges` VALUES (00000000003, 'A19153333', '三号评委', '123', '312241387@qq.com', 'three', '电气与信息学院');
-INSERT INTO `judges` VALUES (00000000005, 'A19154444', '四号评委', '123', '312241387@qq.com', 'four', '电气与信息学院');
-INSERT INTO `judges` VALUES (00000000006, 'A19155555', '五号评委', '123', '312241387@qq.com', 'five', '电气与信息学院');
+INSERT INTO `judges` VALUES (00000000001, 'A19151111', '一号评委', '123', '312241387@qq.com', 'one');
+INSERT INTO `judges` VALUES (00000000002, 'A19152222', '二号评委', '123', '312241387@qq.com', 'two');
+INSERT INTO `judges` VALUES (00000000003, 'A19153333', '三号评委', '123', '312241387@qq.com', 'three');
+INSERT INTO `judges` VALUES (00000000005, 'A19154444', '四号评委', '123', '312241387@qq.com', 'four');
+INSERT INTO `judges` VALUES (00000000006, 'A19155555', '五号评委', '123', '312241387@qq.com', 'five');
 COMMIT;
 
 -- ----------------------------
@@ -104,31 +121,33 @@ CREATE TABLE `scholarship` (
   `isSave` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   `isLand` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
+  `path` varchar(255) DEFAULT '',
+  `fileName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of scholarship
 -- ----------------------------
 BEGIN;
-INSERT INTO `scholarship` VALUES (00000000011, '01', 'A19150292', '', '学习优异', '初审通过', '成绩优异', '复审通过', '电气与信息学院', '计算机科学与技术', '提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000013, '01', 'A19150251', '', '学习优异', '初审通过', '成绩优异', '复审通过', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000014, '01', 'A19150414', '', '学习优异', '初审通过', '成绩优异', '复审未通过', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000015, '01', 'A19150290', '', '学习优异', '初审未通过', '绩点造假', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000016, '01', 'A19150289', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000017, '01', 'A19150237', '', '学习优异', '初审通过', '成绩优异', '复审未通过', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000018, '01', 'A19150238', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000019, '01', 'A19150239', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000020, '01', 'A19150240', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000021, '01', 'A19150241', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000022, '01', 'A19150242', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000023, '02', 'A19150243', '', '本人获得校级ACM比赛一等奖', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000025, '03', 'A19150243', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000046, '04', 'A19150244', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000047, '05', 'A19150245', '', '学习优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000048, '03', 'A19150246', '', '本人获得校级acm比赛一等奖', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000049, '02', 'A19150292', '', 'jjj', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
-INSERT INTO `scholarship` VALUES (00000000050, '01', 'A19150247', '', '本人获得曾获得优秀奖学金', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019');
+INSERT INTO `scholarship` VALUES (00000000051, '01', 'A19150292', '', '成绩优异', '初审通过', '成绩优异', '99.0', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520153513791.zip');
+INSERT INTO `scholarship` VALUES (00000000052, '01', 'A19150251', '', '成绩优异', '初审通过', '成绩优异', '97.0', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520153513791.zip');
+INSERT INTO `scholarship` VALUES (00000000053, '01', 'A19150414', '', '成绩优异', '初审通过', '成绩属实', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520153513791.zip');
+INSERT INTO `scholarship` VALUES (00000000054, '01', 'A19150290', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520220748020.zip');
+INSERT INTO `scholarship` VALUES (00000000055, '01', 'A19150289', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520222251042.zip');
+INSERT INTO `scholarship` VALUES (00000000056, '01', 'A19150237', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520223118582.zip');
+INSERT INTO `scholarship` VALUES (00000000057, '01', 'A19150238', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520223445183.zip');
+INSERT INTO `scholarship` VALUES (00000000058, '01', 'A19150239', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520223555238.zip');
+INSERT INTO `scholarship` VALUES (00000000059, '01', 'A19150240', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520223704912.zip');
+INSERT INTO `scholarship` VALUES (00000000060, '01', 'A19150241', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520223800586.zip');
+INSERT INTO `scholarship` VALUES (00000000061, '01', 'A19150242', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520223912620.zip');
+INSERT INTO `scholarship` VALUES (00000000062, '02', 'A19150243', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520224514753.zip');
+INSERT INTO `scholarship` VALUES (00000000063, '03', 'A19150243', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520224607194.zip');
+INSERT INTO `scholarship` VALUES (00000000064, '04', 'A19150244', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520224713550.zip');
+INSERT INTO `scholarship` VALUES (00000000065, '05', 'A19150245', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520224811013.zip');
+INSERT INTO `scholarship` VALUES (00000000066, '03', 'A19150246', '', '成绩优异', '初审通过', '成绩有效', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520224905483.zip');
+INSERT INTO `scholarship` VALUES (00000000067, '01', 'A19150246', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520225055758.zip');
+INSERT INTO `scholarship` VALUES (00000000068, '01', 'A19150247', '', '成绩优异', '', '', '', '电气与信息学院', '计算机科学与技术', '已提交', '', '2019', '/Users/syl/Public/Scholarship/demo', '20190520225204035.zip');
 COMMIT;
 
 -- ----------------------------
@@ -199,7 +218,7 @@ CREATE TABLE `studentApply` (
   `fGPA` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   `sGPA` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of studentApply
@@ -220,7 +239,7 @@ INSERT INTO `studentApply` VALUES (00000000013, '张三', '123', 'A19150243', '�
 INSERT INTO `studentApply` VALUES (00000000014, '李四', '123', 'A19150244', '电气与信息学院', '计算机科学与技术', '微机1504', '232301199705161815', '312241387@qq.com', '18404552888', '团员', '男', '黑龙江省绥化市', '19970516', '2.5', '2.8');
 INSERT INTO `studentApply` VALUES (00000000015, '王五', '123', 'A19150245', '电气与信息学院', '计算机科学与技术', '微机1504', '232301199705161815', '312241387@qq.com', '18404552888', '团员', '男', '黑龙江省绥化市', '19970516', '2.4', '2.8');
 INSERT INTO `studentApply` VALUES (00000000020, '赵六', '', 'A19150246', '电气与信息学院', '计算机科学与技术', '微机1504', '232301199705161815', '312241387@qq.com', '18404552888', '共青团员', '男', '黑龙江省绥化市', '19970516', '4.00', '3.67');
-INSERT INTO `studentApply` VALUES (00000000021, '谢七', '', 'A19150247', '电气与信息学院', '计算机科学与技术', '微机1504', '232301199705161815', '312241387@qq.com', '18404552888', '共青团员', '男', '黑龙江省绥化市', '19970516', '4.00', '3.67');
+INSERT INTO `studentApply` VALUES (00000000022, '谢七', '', 'A19150247', '电气与信息学院', '计算机科学与技术', '微机1504', '232301199705161815', '312241387@qq.com', '18404552888', '共青团员', '男', '黑龙江省绥化市', '19970516', '3.89', '3.67');
 COMMIT;
 
 -- ----------------------------
@@ -240,7 +259,7 @@ CREATE TABLE `teacher` (
 -- Records of teacher
 -- ----------------------------
 BEGIN;
-INSERT INTO `teacher` VALUES (00000000001, '张书夺', 'A19150000', '123', '电气与信息学院');
+INSERT INTO `teacher` VALUES (00000000001, '张书夺', 'Z2019', '123', '电气与信息学院');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
