@@ -42,6 +42,11 @@ public interface AdminDao {
     @ResultType(Scholarship.class)
     List<Scholarship> selectByKey(String type,String year,String oneApproval,String twoApproval);
 
+    @Select({"<script> select * from scholarship where type = #{type} and time = #{year} and oneApproval = #{oneApproval} and twoApproval = #{twoApproval} </script>"})
+    @ResultType(Scholarship.class)
+    List<Scholarship> selectByKey2(String type,String year,String oneApproval,String twoApproval);
+
+
     @Update({"<script> update scholarship <set> twoApproval = #{twoApproval} </set> where studentId = #{studentId} and type = #{type} and time = #{year} </script>"})
     void UpdateSTwoApproval(String studentId,String type,String year,String twoApproval);
 

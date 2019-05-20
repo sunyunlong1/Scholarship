@@ -115,7 +115,7 @@ public class AdminServiceImpl implements AdminService {
         String[] split = adminSubmissionDto.getKey().split("::");
         String type = split[0];
         String year = split[1];
-        List<Scholarship> scholarshipList = adminDao.selectByKey(split[0], split[1], "初审通过", "");
+        List<Scholarship> scholarshipList = adminDao.selectByKey2(split[0], split[1], "初审通过", "");
         if (scholarshipList ==  null || scholarshipList.size() == 0){
             return "发送失败";
         }
@@ -124,21 +124,41 @@ public class AdminServiceImpl implements AdminService {
             String number = "";
             if (grade.getOneGrade().equals("")){
                 number = "one";
-            }else if(grade.getTwoGrade().equals("")){
+                Judges judges = adminDao.selectByNumber(number);
+                if (judges!=null){
+                    String s = utilsService.sendMail(judges.getEmail(), "提醒");
+                }
+            }
+            if(grade.getTwoGrade().equals("")){
                 number = "two";
-            }else if(grade.getThreeGrade().equals("")){
+                Judges judges = adminDao.selectByNumber(number);
+                if (judges!=null){
+                    String s = utilsService.sendMail(judges.getEmail(), "提醒");
+                }
+            }
+            if(grade.getThreeGrade().equals("")){
                 number = "three";
-            }else if(grade.getFourGrade().equals("")){
+                Judges judges = adminDao.selectByNumber(number);
+                if (judges!=null){
+                    String s = utilsService.sendMail(judges.getEmail(), "提醒");
+                }
+            }
+            if(grade.getFourGrade().equals("")){
                 number = "four";
-            }else if(grade.getFiveGrade().equals("")){
+                Judges judges = adminDao.selectByNumber(number);
+                if (judges!=null){
+                    String s = utilsService.sendMail(judges.getEmail(), "提醒");
+                }
+            }
+            if(grade.getFiveGrade().equals("")){
                 number = "five";
+                Judges judges = adminDao.selectByNumber(number);
+                if (judges!=null){
+                    String s = utilsService.sendMail(judges.getEmail(), "提醒");
+                }
             }
-            Judges judges = adminDao.selectByNumber(number);
-            if (judges!=null){
-                String s = utilsService.sendMail(judges.getEmail(), "提醒");
-                return "发送成功";
-            }
+
         }
-        return "发送失败";
+        return "发送成功";
     }
 }
